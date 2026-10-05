@@ -8,7 +8,7 @@ TODO
 
 ## Image Credits
 
-Images are from BBC/Studio Lambert/Cody Burridge/BBC Creative. The Grot image above is courtesy of Ward Bekker at Grafana Labs.
+Images are from the press pack from the BBC / Studio Lambert / Cody Burridge / BBC Creative. The Grot image above is courtesy of Ward Bekker at Grafana Labs.
 
 ## Using the Data Viewer Utility
 

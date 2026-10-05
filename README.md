@@ -1,3 +1,7 @@
+# Celebrity Traitors: UK Series 2 Workshop
+
+![Celebrity Traitors Workshop](images/grot_celebrity_traitors_workshop.png)
+
 ## Pre-requisites
 
 TODO

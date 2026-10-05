@@ -1,0 +1,95 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Celebrity Traitors: UK Series 2 Image Asset Browser</title>
+<style>
+body { font-family: sans-serif; background: #111; color: #eee; margin: 0; padding: 20px; }
+h1 { font-size: 18px; }
+h3 { margin: 0 0 8px 0; }
+.row { display: flex; gap: 32px; margin-bottom: 24px; }
+.person { flex: 1; }
+.pair { display: flex; gap: 16px; align-items: flex-start; border-bottom: 1px solid #333; padding-bottom: 16px; }
+.cell { text-align: center; }
+.cell img { width: 213px; height: 213px; object-fit: cover; display: block; border: 1px solid #444; }
+.label { font-size: 12px; color: #999; margin-top: 4px; word-break: break-all; max-width: 213px; }
+.info { list-style: none; margin: 10px 0 0; padding: 0; font-size: 13px; text-align: left; }
+.info li { padding: 2px 0; }
+.info li strong { color: #ccc; }
+.info li a { color: #6cf; }
+</style></head>
+<body>
+<h1>Celebrity Traitors: UK Series 2 Image Asset Browser</h1>
+    <div class="pair" style="justify-content:center;">
+      <div class="cell"><img src="../data/images/ensemble.png" style="width:auto; height:auto; max-width:960px;"><div class="label" style="max-width:960px; margin:4px auto 0;">ensemble.png</div></div>
+    </div>
+<div id="contestants"></div>
+<script>
+function fieldLabel(key) {
+  return key.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase());
+}
+
+function isoFlag(code) {
+  return String.fromCodePoint(...code.toUpperCase().split('').map(c => 127397 + c.charCodeAt(0)));
+}
+
+function tagFlag(subdivisionCode) {
+  const tagChars = subdivisionCode.toLowerCase().split('').map(c => String.fromCodePoint(0xE0000 + c.charCodeAt(0)));
+  return '\u{1F3F4}' + tagChars.join('') + '\u{E007F}';
+}
+
+const NATIONALITY_FLAGS = {
+  English: tagFlag('gbeng'),
+  Scottish: tagFlag('gbsct'),
+  Welsh: tagFlag('gbwls'),
+  American: isoFlag('US'),
+  Irish: isoFlag('IE'),
+};
+
+function nationalityFlag(nationality) {
+  return NATIONALITY_FLAGS[nationality] || '';
+}
+
+function listHtml(entries) {
+  return `<ul class="info">${entries.map(([k, v]) => {
+    if (k === 'nationality' && v) {
+      return `<li><strong>${fieldLabel(k)}:</strong> ${nationalityFlag(v)} ${v}</li>`;
+    }
+    if (k === 'wikipedia' && v) {
+      return `<li><strong>${fieldLabel(k)}:</strong> <a href="${v}" target="_blank" rel="noopener">link</a></li>`;
+    }
+    return `<li><strong>${fieldLabel(k)}:</strong> ${v === "" ? "&mdash;" : v}</li>`;
+  }).join('')}</ul>`;
+}
+
+function personHtml(c) {
+  const entries = Object.entries(c);
+  const mid = Math.ceil(entries.length / 2);
+  const activeFields = entries.slice(0, mid);
+  const outFields = entries.slice(mid);
+  return `
+    <div class="person">
+      <h3>${c.name}</h3>
+      <div class="pair">
+        <div class="cell"><img src="../data/images/${c.name}.png"><div class="label">active</div>${listHtml(activeFields)}</div>
+        <div class="cell"><img src="../data/images/${c.name}_out.png"><div class="label">out</div>${listHtml(outFields)}</div>
+      </div>
+    </div>`;
+}
+
+fetch('../data/json/contestants.json')
+  .then(r => r.json())
+  .then(data => {
+    const people = data.contestants.slice().sort((a, b) => a.name.localeCompare(b.name));
+    const container = document.getElementById('contestants');
+    let html = '';
+    for (let i = 0; i < people.length; i += 3) {
+      const pairBlock = people.slice(i, i + 3).map(personHtml).join('');
+      html += `<div class="row">${pairBlock}</div>`;
+    }
+    container.innerHTML = html;
+  })
+  .catch(err => {
+    document.getElementById('contestants').innerHTML =
+      '<p style="color:#f66">Failed to load contestants.json: ' + err +
+      '<br>If you opened this file directly (file://), some browsers block fetch() of local JSON. Try serving the folder, e.g. <code>python3 -m http.server</code>, then open via http://localhost.</p>';
+  });
+</script>
+</body></html>

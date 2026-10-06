@@ -4,7 +4,10 @@
 
 ## Pre-requisites
 
-TODO
+- A laptop with Wi‑Fi, running Linux, macOS, or Windows
+- [Git](https://git-scm.com/install/), if you're going to clone this repo locally
+- **Optional**: IDE such as [VS Code](https://code.visualstudio.com/download) or [Cursor](https://cursor.com/download)
+- TODO other things...
 
 ## Image Credits
 

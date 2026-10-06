@@ -1,0 +1,14 @@
+{
+    "prizeFund": [
+        {
+            "episode": 1,
+            "offered": 15000,
+            "won": 15000
+        },
+        {
+            "episode": 2,
+            "offered": 10000,
+            "won": 5000
+        }
+    ]
+}

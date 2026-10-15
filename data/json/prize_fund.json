@@ -19,6 +19,11 @@
             "episode": 4,
             "offered": 6000,
             "won": 4500
+        },
+        {
+            "episode": 5,
+            "offered": 8000,
+            "won": 8000
         }
     ]
 }

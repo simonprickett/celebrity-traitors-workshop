@@ -9,7 +9,7 @@ This repository contains workshop resources for learning about TODO in Grafana w
 - A laptop with Wi‑Fi, running Linux, macOS, or Windows
 - [Git](https://git-scm.com/install/), if you're going to clone this repo locally
 - **Optional**: IDE such as [VS Code](https://code.visualstudio.com/download) or [Cursor](https://cursor.com/download)
-- **Optional**: A local install of [Python 3](https://www.python.org/downloads/) if you want to run the data viewer utility locally (not requitred to be successful with this workshop)
+- **Optional**: A local install of [Python 3](https://www.python.org/downloads/) if you want to run the data viewer utility locally (not required to be successful with this workshop)
 - A free tier [Grafana Cloud](https://grafana.com/auth/sign-up/create-user/) account (or install and run Grafana locally).  Cloud is preferred in order to more easily benefit from the AI assistant technology.
 - TODO other things...
 

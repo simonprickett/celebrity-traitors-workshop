@@ -1,0 +1,17 @@
+player,round,status,decision,voted_for,outcome
+james_b,1,faithful,continue,leigh-anne,
+kenny,1,traitor,continue,leigh-anne,
+leigh-anne,1,faithful,continue,romesh,banished
+romesh,1,faithful,continue,leigh-anne,
+sebastian,1,faithful,continue,leigh-anne,
+james_b,2,faithful,continue,kenny,
+kenny,2,traitor,end,james_b,
+romesh,2,faithful,continue,james_b,
+sebastian,2,faithful,continue,kenny,
+james_b,3,faithful,,,
+kenny,3,traitor,,,banished
+romesh,3,faithful,,kenny,winner
+sebastian,3,faithful,,kenny,
+james_b,4,faithful,continue,romesh,banished
+romesh,4,faithful,end,james_b,
+sebastian,4,faithful,end,james_b,winner

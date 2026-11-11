@@ -1,4 +1,4 @@
-player,episode,episode_date,status,shield,voted_for_rt1,vote_count_rt1,voted_for_rt2,vote_count_rt2,outcome,recruitment,power
+player,episode,episodeDate,status,shield,votedForRt1,voteCountRt1,votedForRt2,voteCountRt2,outcome,recruitment,power
 amol,1,01/10/2026,faithful,,,,,,,,
 bella,1,01/10/2026,faithful,,,,,,,,
 james_a,1,01/10/2026,faithful,,,,,,,,

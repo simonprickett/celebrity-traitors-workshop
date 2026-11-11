@@ -1,0 +1,132 @@
+{
+    "endGame": [
+        {
+            "player": "james_b",
+            "round": 1,
+            "status": "faithful",
+            "decision": "continue",
+            "votedFor": "leigh-anne",
+            "outcome": ""
+        },
+        {
+            "player": "kenny",
+            "round": 1,
+            "status": "traitor",
+            "decision": "continue",
+            "votedFor": "leigh-anne",
+            "outcome": ""
+        },
+        {
+            "player": "leigh-anne",
+            "round": 1,
+            "status": "faithful",
+            "decision": "continue",
+            "votedFor": "romesh",
+            "outcome": "banished"
+        },
+        {
+            "player": "romesh",
+            "round": 1,
+            "status": "faithful",
+            "decision": "continue",
+            "votedFor": "leigh-anne",
+            "outcome": ""
+        },
+        {
+            "player": "sebastian",
+            "round": 1,
+            "status": "faithful",
+            "decision": "continue",
+            "votedFor": "leigh-anne",
+            "outcome": ""
+        },
+        {
+            "player": "james_b",
+            "round": 2,
+            "status": "faithful",
+            "decision": "continue",
+            "votedFor": "kenny",
+            "outcome": ""
+        },
+        {
+            "player": "kenny",
+            "round": 2,
+            "status": "traitor",
+            "decision": "end",
+            "votedFor": "james_b",
+            "outcome": ""
+        },
+        {
+            "player": "romesh",
+            "round": 2,
+            "status": "faithful",
+            "decision": "continue",
+            "votedFor": "james_b",
+            "outcome": ""
+        },
+        {
+            "player": "sebastian",
+            "round": 2,
+            "status": "faithful",
+            "decision": "continue",
+            "votedFor": "kenny",
+            "outcome": ""
+        },
+        {
+            "player": "james_b",
+            "round": 3,
+            "status": "faithful",
+            "decision": "",
+            "votedFor": "",
+            "outcome": ""
+        },
+        {
+            "player": "kenny",
+            "round": 3,
+            "status": "traitor",
+            "decision": "",
+            "votedFor": "",
+            "outcome": "banished"
+        },
+        {
+            "player": "romesh",
+            "round": 3,
+            "status": "faithful",
+            "decision": "",
+            "votedFor": "kenny",
+            "outcome": "winner"
+        },
+        {
+            "player": "sebastian",
+            "round": 3,
+            "status": "faithful",
+            "decision": "",
+            "votedFor": "kenny",
+            "outcome": ""
+        },
+        {
+            "player": "james_b",
+            "round": 4,
+            "status": "faithful",
+            "decision": "continue",
+            "votedFor": "romesh",
+            "outcome": "banished"
+        },
+        {
+            "player": "romesh",
+            "round": 4,
+            "status": "faithful",
+            "decision": "end",
+            "votedFor": "james_b",
+            "outcome": ""
+        },
+        {
+            "player": "sebastian",
+            "round": 4,
+            "status": "faithful",
+            "decision": "end",
+            "votedFor": "james_b",
+            "outcome": "winner"
+        }
+    ]
+}

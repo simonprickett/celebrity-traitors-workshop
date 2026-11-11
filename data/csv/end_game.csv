@@ -1,4 +1,4 @@
-player,round,status,decision,voted_for,outcome
+player,round,status,decision,votedFor,outcome
 james_b,1,faithful,continue,leigh-anne,
 kenny,1,traitor,continue,leigh-anne,
 leigh-anne,1,faithful,continue,romesh,banished

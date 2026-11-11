@@ -2,53 +2,53 @@
     "prizeFund": [
         {
             "episode": 1,
-            "offered": 15000,
-            "won": 15000
+            "prizeOffered": 15000,
+            "prizeWon": 15000
         },
         {
             "episode": 2,
-            "offered": 10000,
-            "won": 5000
+            "prizeOffered": 10000,
+            "prizeWon": 5000
         },
         {
             "episode": 3,
-            "offered": 6000,
-            "won": 6000
+            "prizeOffered": 6000,
+            "prizeWon": 6000
         },
         {
             "episode": 4,
-            "offered": 6000,
-            "won": 4500
+            "prizeOffered": 6000,
+            "prizeWon": 4500
         },
         {
             "episode": 5,
-            "offered": 8000,
-            "won": 8000
+            "prizeOffered": 8000,
+            "prizeWon": 8000
         },
         {
             "episode": 6,
-            "offered": 9000,
-            "won": 7500
+            "prizeOffered": 9000,
+            "prizeWon": 7500
         },
         {
             "episode": 7,
-            "offered": 9000,
-            "won": 0
+            "prizeOffered": 9000,
+            "prizeWon": 0
         },
         {
             "episode": 8,
-            "offered": 13500,
-            "won": 13500
+            "prizeOffered": 13500,
+            "prizeWon": 13500
         },
         {
             "episode": 9,
-            "offered": 5000,
-            "won": 5000
+            "prizeOffered": 5000,
+            "prizeWon": 5000
         },
         {
             "episode": 10,
-            "offered": 18500,
-            "won": 18500
+            "prizeOffered": 18500,
+            "prizeWon": 18500
         }
     ]
 }

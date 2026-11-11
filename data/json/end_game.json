@@ -76,7 +76,7 @@
             "player": "james_b",
             "round": 3,
             "status": "faithful",
-            "decision": null,
+            "decision": "continue",
             "votedFor": null,
             "outcome": null
         },
@@ -84,7 +84,7 @@
             "player": "kenny",
             "round": 3,
             "status": "traitor",
-            "decision": null,
+            "decision": "end",
             "votedFor": null,
             "outcome": "banished"
         },
@@ -92,7 +92,7 @@
             "player": "romesh",
             "round": 3,
             "status": "faithful",
-            "decision": null,
+            "decision": "continue",
             "votedFor": "kenny",
             "outcome": "winner"
         },
@@ -100,7 +100,7 @@
             "player": "sebastian",
             "round": 3,
             "status": "faithful",
-            "decision": null,
+            "decision": "continue",
             "votedFor": "kenny",
             "outcome": null
         },

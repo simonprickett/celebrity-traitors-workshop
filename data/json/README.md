@@ -112,9 +112,11 @@ The final stage, played as rounds between the remaining players.
 | `player` | string | A contestant's `name`. |
 | `round` | number | End game round, 1 to 4. |
 | `status` | string | `faithful` or `traitor`. |
-| `decision` | string or `null` | `continue` or `end`, the player's choice in that round. `null` when no choice was made. |
-| `votedFor` | string or `null` | The `player` they voted for. |
+| `decision` | string | `continue` or `end`, the player's choice in that round. In a tie-break round players can't change it, so it repeats their choice from the previous round. |
+| `votedFor` | string or `null` | The `player` they voted for. `null` for a player who sits out a tie-break round. |
 | `outcome` | string or `null` | `banished` or `winner`. |
+
+After a tied vote the next round is a tie-break: the players named in the tie sit out (`votedFor` is `null`) and the others vote to break it. In round 3 here, james_b and kenny sit out after tying in round 2.
 
 ## `prize_fund.json`
 

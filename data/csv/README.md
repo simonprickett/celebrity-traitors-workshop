@@ -85,9 +85,11 @@ romesh,1,faithful,continue,leigh-anne,
 | `player` | A contestant's `name`. |
 | `round` | End game round, 1 to 4. |
 | `status` | `faithful` or `traitor`. |
-| `decision` | `continue` or `end`, the player's choice in that round. Empty when no choice was made. |
-| `votedFor` | The `player` they voted for. |
+| `decision` | `continue` or `end`, the player's choice in that round. In a tie-break round players can't change it, so it repeats their choice from the previous round. |
+| `votedFor` | The `player` they voted for. Empty for a player who sits out a tie-break round. |
 | `outcome` | `banished` or `winner`. |
+
+After a tied vote the next round is a tie-break: the players named in the tie sit out (empty `votedFor`) and the others vote to break it. In round 3 here, james_b and kenny sit out after tying in round 2.
 
 ## `prize_fund.csv`
 

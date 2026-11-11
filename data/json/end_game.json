@@ -6,7 +6,7 @@
             "status": "faithful",
             "decision": "continue",
             "votedFor": "leigh-anne",
-            "outcome": ""
+            "outcome": null
         },
         {
             "player": "kenny",
@@ -14,7 +14,7 @@
             "status": "traitor",
             "decision": "continue",
             "votedFor": "leigh-anne",
-            "outcome": ""
+            "outcome": null
         },
         {
             "player": "leigh-anne",
@@ -30,7 +30,7 @@
             "status": "faithful",
             "decision": "continue",
             "votedFor": "leigh-anne",
-            "outcome": ""
+            "outcome": null
         },
         {
             "player": "sebastian",
@@ -38,7 +38,7 @@
             "status": "faithful",
             "decision": "continue",
             "votedFor": "leigh-anne",
-            "outcome": ""
+            "outcome": null
         },
         {
             "player": "james_b",
@@ -46,7 +46,7 @@
             "status": "faithful",
             "decision": "continue",
             "votedFor": "kenny",
-            "outcome": ""
+            "outcome": null
         },
         {
             "player": "kenny",
@@ -54,7 +54,7 @@
             "status": "traitor",
             "decision": "end",
             "votedFor": "james_b",
-            "outcome": ""
+            "outcome": null
         },
         {
             "player": "romesh",
@@ -62,7 +62,7 @@
             "status": "faithful",
             "decision": "continue",
             "votedFor": "james_b",
-            "outcome": ""
+            "outcome": null
         },
         {
             "player": "sebastian",
@@ -70,29 +70,29 @@
             "status": "faithful",
             "decision": "continue",
             "votedFor": "kenny",
-            "outcome": ""
+            "outcome": null
         },
         {
             "player": "james_b",
             "round": 3,
             "status": "faithful",
-            "decision": "",
-            "votedFor": "",
-            "outcome": ""
+            "decision": null,
+            "votedFor": null,
+            "outcome": null
         },
         {
             "player": "kenny",
             "round": 3,
             "status": "traitor",
-            "decision": "",
-            "votedFor": "",
+            "decision": null,
+            "votedFor": null,
             "outcome": "banished"
         },
         {
             "player": "romesh",
             "round": 3,
             "status": "faithful",
-            "decision": "",
+            "decision": null,
             "votedFor": "kenny",
             "outcome": "winner"
         },
@@ -100,9 +100,9 @@
             "player": "sebastian",
             "round": 3,
             "status": "faithful",
-            "decision": "",
+            "decision": null,
             "votedFor": "kenny",
-            "outcome": ""
+            "outcome": null
         },
         {
             "player": "james_b",
@@ -118,7 +118,7 @@
             "status": "faithful",
             "decision": "end",
             "votedFor": "james_b",
-            "outcome": ""
+            "outcome": null
         },
         {
             "player": "sebastian",

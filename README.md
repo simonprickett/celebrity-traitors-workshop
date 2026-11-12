@@ -17,6 +17,40 @@ This repository contains workshop resources for learning about TODO in Grafana w
 
 Images are from the press pack from the BBC / Studio Lambert / Cody Burridge / BBC Creative. The Grot image above is courtesy of Ward Bekker at Grafana Labs.
 
+## Get Familiar with the Data
+
+All of the data for the workshop is in the [`data/`](data/README.md) folder. It covers series 2 of the UK Celebrity Traitors: who took part, what happened to each player in every episode, how the end game played out, and how much prize money was won.
+
+### Datasets
+
+| Dataset | What it contains |
+|---|---|
+| Contestants | The 21 people who took part: name, profession, age, gender, nationality and a Wikipedia link. |
+| Main game | One row per player per episode or round table: their status (faithful, traitor, and so on), shield, who they voted for, votes received, outcome, recruitment and power. |
+| End game | One row per player per end game round: status, decision, who they voted for and the outcome. |
+| Prize fund | One row per episode: the prize money offered and the amount won. |
+
+### Formats and locations
+
+Every dataset is available in two formats, with the same field names and the same content. Use whichever suits the tool you are working with.
+
+| Format | Location | Documentation |
+|---|---|---|
+| CSV | [`data/csv/`](data/csv/) | [CSV data README](data/csv/README.md) |
+| JSON | [`data/json/`](data/json/) | [JSON data README](data/json/README.md) |
+| Images | [`data/images/`](data/images/) | See below |
+
+The [data README](data/README.md) describes the conventions used throughout (nulls, dates, player ids and so on). If you edit one format, the conversion script described in the [tools README](tools/README.md) keeps the other in step.
+
+### Images
+
+Contestant photos are in [`data/images/`](data/images/) in WebP format. Each contestant has two images:
+
+- `<name>.webp`: the regular image, showing the contestant in the game.
+- `<name>_out.webp`: the `_out` image, showing the same contestant after leaving the game.
+
+For example, `kenny.webp` and `kenny_out.webp`. The `<name>` part is the same short id used as `name` in the contestants data and as `player` in the game data, so you can match images to records directly. There is also `ensemble.webp`, a group shot of the cast with no `_out` equivalent.
+
 ## Using the Data Viewer Utility
 
 `utils/viewer.html` is a browser-based viewer for the contestant images and data in `data/images/` and `data/json/contestants.json`. It fetches the JSON and image files using relative paths (`../data/images/...` and `../data/json/...`), so it must be served from the **repository root**, not from inside `utils/`.

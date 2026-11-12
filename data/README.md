@@ -28,10 +28,6 @@ Every dataset is available as both CSV and JSON, so you can pick the format that
 - **Player ids**: `player` in the game datasets, and `name` in contestants, hold a short lower-case id such as `james_a` or `leigh-anne`. These are the same ids as in the image file names, and `player` always matches a contestant's `name`.
 - **Prize money** is a whole number.
 
-## Known gaps
-
-`main_game` has two `recruitment` values marked `TODO ...` that still need checking against the episodes (james_a in episode 2 and kenny in episode 6).
-
 ## Editing the data
 
 If you change one format, regenerate or check the other with the script in [`tools/`](../tools/README.md):

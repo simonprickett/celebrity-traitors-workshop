@@ -69,7 +69,6 @@ How the rows work:
 
 - **Banishments** are on the banished player's row for the round table where it happened. Ties lead to another vote (episode 8, round tables 7 and 8), and the tied players do not vote in the revote, so their `votedFor` is empty.
 - **An empty vote** can mean there was no round table, or that the player was there but did not vote.
-- **To check:** two `recruitment` values still say `TODO review` (james_a in episode 2, kenny in episode 6).
 
 ## `end_game.csv`
 

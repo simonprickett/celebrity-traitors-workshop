@@ -309,7 +309,7 @@
             "votedFor": null,
             "votes": null,
             "outcome": null,
-            "recruitment": "TODO review this",
+            "recruitment": "accepted",
             "power": null
         },
         {
@@ -1370,12 +1370,12 @@
             "episode": 5,
             "episodeDate": "15/10/2026",
             "roundTable": 4,
-            "status": "faithful",
+            "status": "traitor",
             "shield": false,
             "votedFor": "hannah",
             "votes": 1,
             "outcome": null,
-            "recruitment": null,
+            "recruitment": "accepted",
             "power": null
         },
         {
@@ -1570,7 +1570,7 @@
             "votedFor": "joe",
             "votes": 1,
             "outcome": null,
-            "recruitment": "TODO review",
+            "recruitment": null,
             "power": null
         },
         {

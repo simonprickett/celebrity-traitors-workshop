@@ -10,8 +10,8 @@ romesh,2,faithful,continue,james_b,
 sebastian,2,faithful,continue,kenny,
 james_b,3,faithful,continue,,
 kenny,3,traitor,end,,banished
-romesh,3,faithful,continue,kenny,winner
+romesh,3,faithful,continue,kenny,
 sebastian,3,faithful,continue,kenny,
 james_b,4,faithful,continue,romesh,banished
-romesh,4,faithful,end,james_b,
+romesh,4,faithful,end,james_b,winner
 sebastian,4,faithful,end,james_b,winner

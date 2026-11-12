@@ -50,7 +50,7 @@ Votes that landed on a traitor, out of votes cast while faithful, ordered by hit
 | sharon | 2 / 7 |
 | joanne | 0 / 7 |
 
-Sebastian cast the most votes at traitors (5) and was still in the game at the end. He is marked `winner` in the final end game round, and he held a shield in 2 episodes. Romesh is marked `winner` in end game round 3 and had a similar record (4 of 10). Sebastian comes out slightly ahead, but it is close.
+Sebastian cast the most votes at traitors (5) and was still in the game at the end. He is marked `winner` in the final end game round, and he held a shield in 2 episodes. Romesh is also marked `winner` in the final round and had a similar record (4 of 10). Sebastian comes out slightly ahead, but it is close.
 
 ## Method
 

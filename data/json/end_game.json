@@ -94,7 +94,7 @@
             "status": "faithful",
             "decision": "continue",
             "votedFor": "kenny",
-            "outcome": "winner"
+            "outcome": null
         },
         {
             "player": "sebastian",
@@ -118,7 +118,7 @@
             "status": "faithful",
             "decision": "end",
             "votedFor": "james_b",
-            "outcome": null
+            "outcome": "winner"
         },
         {
             "player": "sebastian",

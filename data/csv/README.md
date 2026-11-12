@@ -49,12 +49,12 @@ richard,3,08/10/2026,1,traitor,false,bella,1,banished,,
 | `episode` | Episode number, 1 to 10. |
 | `episodeDate` | When the episode aired, `DD/MM/YYYY`. |
 | `roundTable` | Round table number, counted across the whole series from 1. Empty when the row is not at a round table. |
-| `status` | `faithful` or `traitor`, as at that point in the episode. |
+| `status` | `faithful` or `traitor`, as at that point in the episode. At a round table it is the player's status when they voted. |
 | `shield` | `true` if the player held a shield in that episode, otherwise `false`. |
 | `votedFor` | The `player` they voted to banish at that round table. |
 | `votes` | How many votes their vote counted for: `1`, or `2` when they used the dagger. |
 | `outcome` | `banished` (at this round table) or `murdered` (revealed in this episode). |
-| `recruitment` | The result of a recruitment offer, for example `accepted`. |
+| `recruitment` | The result of a recruitment offer, for example `accepted`. Recruitment happens after the round table, so a player recruited in an episode still shows `faithful` on that episode's round table row and `traitor` from the next episode (kenny, episode 5). |
 | `power` | A power used at this round table, for example `dagger`. |
 
 How the rows work:

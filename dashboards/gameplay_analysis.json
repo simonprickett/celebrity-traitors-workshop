@@ -3103,7 +3103,7 @@
                             "type": "value",
                             "options": {
                               "banished": {
-                                "color": "#5794F2",
+                                "color": "orange",
                                 "text": "Banished",
                                 "index": 0
                               },
@@ -3144,7 +3144,7 @@
         "spec": {
           "id": 13,
           "title": "The end game",
-          "description": "Rounds 1 to 4. Photos switch to the _out image for the player banished that round. After a tie in round 2 the next round is a tie-break, where tied players sit out and everyone's decision repeats.",
+          "description": "Rounds 1 to 4. The Contestant cell is green for a faithful player and red for a traitor. Photos switch to the _out image for the player banished that round. After a tie in round 2 the next round is a tie-break, where tied players sit out and everyone's decision repeats.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -3308,7 +3308,7 @@
                         "name": "__expr__"
                       },
                       "spec": {
-                        "expression": "SELECT c.round,\n       CASE WHEN c.outcome = 'banished' THEN CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', c.player, '_out.webp')\n            ELSE CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', c.player, '.webp') END AS photo,\n       COALESCE(NULLIF(b.knownAs, ''), CONCAT(b.firstName, ' ', b.lastName)) AS contestant,\n       c.status, CASE c.decision WHEN 'end' THEN '\ud83d\udc4d End' WHEN 'continue' THEN '\ud83d\udc4e Continue' ELSE c.decision END AS decision, vb.firstName AS voted_for, c.outcome\nFROM C c\nJOIN B b ON b.name = c.player\nLEFT JOIN B vb ON vb.name = c.votedFor\nORDER BY c.round, c.player",
+                        "expression": "SELECT c.round,\n       CASE WHEN c.outcome = 'banished' THEN CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', c.player, '_out.webp')\n            ELSE CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', c.player, '.webp') END AS photo,\n       COALESCE(NULLIF(b.knownAs, ''), CONCAT(b.firstName, ' ', b.lastName)) AS contestant,\n       CASE c.decision WHEN 'end' THEN '\ud83d\udc4d End' WHEN 'continue' THEN '\ud83d\udc4e Continue' ELSE c.decision END AS decision, vb.firstName AS voted_for, c.outcome\nFROM C c\nJOIN B b ON b.name = c.player\nLEFT JOIN B vb ON vb.name = c.votedFor\nORDER BY c.round, c.player",
                         "type": "sql"
                       }
                     }
@@ -3393,22 +3393,6 @@
                       {
                         "id": "custom.align",
                         "value": "left"
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "status"
-                    },
-                    "properties": [
-                      {
-                        "id": "displayName",
-                        "value": "Status"
-                      },
-                      {
-                        "id": "custom.width",
-                        "value": 120
                       },
                       {
                         "id": "mappings",
@@ -3416,29 +3400,29 @@
                           {
                             "type": "value",
                             "options": {
-                              "traitor": {
-                                "color": "red",
-                                "text": "Traitor",
+                              "James Blunt": {
+                                "color": "green",
+                                "text": "James Blunt",
                                 "index": 0
                               },
-                              "faithful": {
-                                "color": "green",
-                                "text": "Faithful",
+                              "King Kenny": {
+                                "color": "red",
+                                "text": "King Kenny",
                                 "index": 1
                               },
-                              "banished": {
-                                "color": "orange",
-                                "text": "Banished",
+                              "Leigh-Anne Pinnock": {
+                                "color": "green",
+                                "text": "Leigh-Anne Pinnock",
                                 "index": 2
                               },
-                              "murdered": {
-                                "color": "purple",
-                                "text": "Murdered",
+                              "Romesh Ranganathan": {
+                                "color": "green",
+                                "text": "Romesh Ranganathan",
                                 "index": 3
                               },
-                              "winner": {
-                                "color": "yellow",
-                                "text": "Winner",
+                              "Sebastian Croft": {
+                                "color": "green",
+                                "text": "Sebastian Croft",
                                 "index": 4
                               }
                             }
@@ -3532,7 +3516,7 @@
                               },
                               "winner": {
                                 "color": "yellow",
-                                "text": "Winner",
+                                "text": "\ud83c\udfc6 Winner",
                                 "index": 4
                               }
                             }
@@ -4199,7 +4183,7 @@
                         "name": "__expr__"
                       },
                       "spec": {
-                        "expression": "SELECT UPPER(outcome) AS end_game_result\nFROM C\nWHERE player = 'sebastian' AND outcome = 'winner'",
+                        "expression": "SELECT CONCAT('\ud83c\udfc6 ', UPPER(LEFT(outcome, 1)), SUBSTRING(outcome, 2)) AS end_game_result\nFROM C\nWHERE player = 'sebastian' AND outcome = 'winner'",
                         "type": "sql"
                       }
                     }
@@ -6607,8 +6591,8 @@
                         },
                         "x": 0,
                         "y": 0,
-                        "width": 24,
-                        "height": 11
+                        "width": 16,
+                        "height": 13
                       }
                     },
                     {
@@ -6618,10 +6602,10 @@
                           "kind": "ElementReference",
                           "name": "panel-1"
                         },
-                        "x": 0,
-                        "y": 11,
+                        "x": 16,
+                        "y": 0,
                         "width": 8,
-                        "height": 15
+                        "height": 13
                       }
                     },
                     {
@@ -6631,9 +6615,9 @@
                           "kind": "ElementReference",
                           "name": "panel-2"
                         },
-                        "x": 8,
-                        "y": 11,
-                        "width": 8,
+                        "x": 0,
+                        "y": 13,
+                        "width": 12,
                         "height": 4
                       }
                     },
@@ -6644,9 +6628,9 @@
                           "kind": "ElementReference",
                           "name": "panel-41"
                         },
-                        "x": 16,
-                        "y": 11,
-                        "width": 8,
+                        "x": 12,
+                        "y": 13,
+                        "width": 12,
                         "height": 4
                       }
                     },
@@ -6657,9 +6641,9 @@
                           "kind": "ElementReference",
                           "name": "panel-33"
                         },
-                        "x": 8,
-                        "y": 15,
-                        "width": 8,
+                        "x": 0,
+                        "y": 17,
+                        "width": 12,
                         "height": 11
                       }
                     },
@@ -6670,9 +6654,9 @@
                           "kind": "ElementReference",
                           "name": "panel-35"
                         },
-                        "x": 16,
-                        "y": 15,
-                        "width": 8,
+                        "x": 12,
+                        "y": 17,
+                        "width": 12,
                         "height": 11
                       }
                     }

@@ -6,7 +6,7 @@
   },
   "spec": {
     "title": "Celebrity Traitors: Gameplay Analysis",
-    "description": "Who played the best game in series 2 of UK Celebrity Traitors? SQL expressions over CSV data on GitHub.",
+    "description": "Who played the best game in series 2 of UK Celebrity Traitors? SQL expressions over CSV data.",
     "tags": [
       "celebrity-traitors",
       "workshop"
@@ -110,7 +110,7 @@
                   "showMiniMap": false
                 },
                 "mode": "markdown",
-                "content": "# Celebrity Traitors: who played the best game?\n\n> ### \ud83c\udfc6 **Kenny** played the best game overall. **Sebastian** was the best faithful.\n\nThe data records **outcomes and votes**, not persuasion or the social game, so each side is judged on its own aim:\n\n| | \ud83d\udde1\ufe0f Traitor | \ud83d\udee1\ufe0f Faithful |\n|---|---|---|\n| **The aim** | Stay undetected. | Find the traitors. |\n| **The measure** | Faithful votes drawn per round table. | Votes that landed on a traitor, and surviving to the end. |\n\nEverything here is read live from CSV files on GitHub using the **Infinity data source**, and **every figure is a SQL expression**. Open any panel and look at query **Z**."
+                "content": "# Celebrity Traitors: who played the best game?\n\n> ### \ud83c\udfc6 **Kenny** played the best game overall. **Sebastian** was the best faithful.\n\nThe data records **outcomes and votes**, not persuasion or the social game, so each side is judged on its own aim:\n\n| | \ud83d\udde1\ufe0f Traitor | \ud83d\udee1\ufe0f Faithful |\n|---|---|---|\n| **The aim** | Stay undetected. | Find the traitors. |\n| **The measure** | Faithful votes drawn per round table. | Votes that landed on a traitor, and surviving to the end. |\n\n\ud83d\udcfa The show aired on the BBC in October 2026. If you have access to the iPlayer, you can [watch here](https://www.bbc.co.uk/iplayer/episodes/m002csng/the-celebrity-traitors?seriesId=m002csng-structural-2-m0030pxs).\n\nEverything here is read live from CSV files using the **Infinity data source**, and **every figure is a SQL expression**. Open any panel and look at query **Z**."
               }
             }
           }
@@ -3613,7 +3613,7 @@
                   "showLineNumbers": false,
                   "showMiniMap": false
                 },
-                "content": "### How these figures are calculated\n\n1. **Data:** each panel loads `main_game.csv`, `contestants.csv` and/or `end_game.csv` from this repo's `data/csv/` folder on `raw.githubusercontent.com`, using the **Infinity** data source. Photos come from `data/images/`.\n2. **SQL:** each figure is a **SQL expression** over those CSV queries. Open a panel and look at query **Z**.\n3. **\"At a traitor\":** a vote counts if the player voted for was a traitor at the **same round table**. \"Faithful votes against\" only counts votes from players who were faithful at that table, and a **dagger** vote counts as 2.\n4. **Status changes:** Kenny is faithful until the episode 5 round table and a traitor from episode 6, so he appears in both the traitor and faithful tables.\n\n> \u26a0\ufe0f **Caveats:** samples are small (Kenny's faithful accuracy rests on 4 votes); winners are read from the `winner` markers in the end game data; other definitions of \"best\" would give other answers.",
+                "content": "### How these figures are calculated\n\n1. **Data:** each panel loads `main_game.csv`, `contestants.csv` and/or `end_game.csv` using the **Infinity** data source. The CSVs are provided with the workshop data. The photos are provided with the workshop data too.\n2. **SQL:** each figure is a **SQL expression** over those CSV queries. Open a panel and look at query **Z**.\n3. **\"At a traitor\":** a vote counts if the player voted for was a traitor at the **same round table**. \"Faithful votes against\" only counts votes from players who were faithful at that table, and a **dagger** vote counts as 2.\n4. **Status changes:** Kenny is faithful until the episode 5 round table and a traitor from episode 6, so he appears in both the traitor and faithful tables.\n\n> \u26a0\ufe0f **Caveats:** samples are small (Kenny's faithful accuracy rests on 4 votes); winners are read from the `winner` markers in the end game data; other definitions of \"best\" would give other answers.",
                 "mode": "markdown"
               }
             }

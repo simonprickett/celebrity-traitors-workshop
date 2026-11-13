@@ -2569,27 +2569,27 @@
                             "options": {
                               "traitor": {
                                 "color": "red",
-                                "text": "traitor",
+                                "text": "Traitor",
                                 "index": 0
                               },
                               "faithful": {
                                 "color": "green",
-                                "text": "faithful",
+                                "text": "Faithful",
                                 "index": 1
                               },
                               "banished": {
                                 "color": "orange",
-                                "text": "banished",
+                                "text": "Banished",
                                 "index": 2
                               },
                               "murdered": {
                                 "color": "purple",
-                                "text": "murdered",
+                                "text": "Murdered",
                                 "index": 3
                               },
                               "winner": {
                                 "color": "yellow",
-                                "text": "winner",
+                                "text": "Winner",
                                 "index": 4
                               }
                             }
@@ -2692,7 +2692,7 @@
         "spec": {
           "id": 12,
           "title": "Who left the game, and when",
-          "description": "Everyone banished or murdered in the main game. Photos are the _out images. Traitors caught by banishment: Richard, Hannah, James and Maya.",
+          "description": "Everyone banished or murdered in the main game. Photos are the _out images. The Contestant cell is green if the player was faithful when they left and red if they were a traitor. Traitors caught by banishment: Richard, Hannah, James and Maya.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -2881,7 +2881,7 @@
                         "name": "__expr__"
                       },
                       "spec": {
-                        "expression": "SELECT a.episode, a.roundTable AS round_table,\n       CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', a.player, '_out.webp') AS photo,\n       COALESCE(NULLIF(b.knownAs, ''), CONCAT(b.firstName, ' ', b.lastName)) AS contestant,\n       a.status AS status_when_out, a.outcome\nFROM A a\nJOIN B b ON b.name = a.player\nWHERE a.outcome IN ('banished', 'murdered')\nORDER BY a.episode, a.roundTable",
+                        "expression": "SELECT a.episode, a.roundTable AS round_table,\n       CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', a.player, '_out.webp') AS photo,\n       COALESCE(NULLIF(b.knownAs, ''), CONCAT(b.firstName, ' ', b.lastName)) AS contestant,\n       a.outcome\nFROM A a\nJOIN B b ON b.name = a.player\nWHERE a.outcome IN ('banished', 'murdered')\nORDER BY a.episode, a.roundTable",
                         "type": "sql"
                       }
                     }
@@ -2982,22 +2982,6 @@
                       {
                         "id": "custom.align",
                         "value": "left"
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "status_when_out"
-                    },
-                    "properties": [
-                      {
-                        "id": "displayName",
-                        "value": "Status"
-                      },
-                      {
-                        "id": "custom.width",
-                        "value": 120
                       },
                       {
                         "id": "mappings",
@@ -3005,30 +2989,85 @@
                           {
                             "type": "value",
                             "options": {
-                              "traitor": {
-                                "color": "red",
-                                "text": "traitor",
+                              "Amol Rajan": {
+                                "color": "green",
+                                "text": "Amol Rajan",
                                 "index": 0
                               },
-                              "faithful": {
-                                "color": "green",
-                                "text": "faithful",
+                              "Richard E. Grant": {
+                                "color": "red",
+                                "text": "Richard E. Grant",
                                 "index": 1
                               },
-                              "banished": {
-                                "color": "orange",
-                                "text": "banished",
+                              "Myha'la": {
+                                "color": "green",
+                                "text": "Myha'la",
                                 "index": 2
                               },
-                              "murdered": {
-                                "color": "purple",
-                                "text": "murdered",
+                              "Bella Ramsey": {
+                                "color": "green",
+                                "text": "Bella Ramsey",
                                 "index": 3
                               },
-                              "winner": {
-                                "color": "yellow",
-                                "text": "winner",
+                              "Julie Hesmondhalgh": {
+                                "color": "green",
+                                "text": "Julie Hesmondhalgh",
                                 "index": 4
+                              },
+                              "Rob Beckett": {
+                                "color": "green",
+                                "text": "Rob Beckett",
+                                "index": 5
+                              },
+                              "Hannah Fry": {
+                                "color": "red",
+                                "text": "Hannah Fry",
+                                "index": 6
+                              },
+                              "Joe Lycett": {
+                                "color": "green",
+                                "text": "Joe Lycett",
+                                "index": 7
+                              },
+                              "Ross Kemp": {
+                                "color": "green",
+                                "text": "Ross Kemp",
+                                "index": 8
+                              },
+                              "Jerry Hall": {
+                                "color": "green",
+                                "text": "Jerry Hall",
+                                "index": 9
+                              },
+                              "Miranda Hart": {
+                                "color": "green",
+                                "text": "Miranda Hart",
+                                "index": 10
+                              },
+                              "Joanne McNally": {
+                                "color": "green",
+                                "text": "Joanne McNally",
+                                "index": 11
+                              },
+                              "Sharon Rooney": {
+                                "color": "green",
+                                "text": "Sharon Rooney",
+                                "index": 12
+                              },
+                              "James Acaster": {
+                                "color": "red",
+                                "text": "James Acaster",
+                                "index": 13
+                              },
+                              "Michael Sheen": {
+                                "color": "green",
+                                "text": "Michael Sheen",
+                                "index": 14
+                              },
+                              "Maya Jama": {
+                                "color": "red",
+                                "text": "Maya Jama",
+                                "index": 15
                               }
                             }
                           }
@@ -3063,30 +3102,15 @@
                           {
                             "type": "value",
                             "options": {
-                              "traitor": {
-                                "color": "red",
-                                "text": "traitor",
+                              "banished": {
+                                "color": "#5794F2",
+                                "text": "Banished",
                                 "index": 0
                               },
-                              "faithful": {
-                                "color": "green",
-                                "text": "faithful",
-                                "index": 1
-                              },
-                              "banished": {
-                                "color": "orange",
-                                "text": "banished",
-                                "index": 2
-                              },
                               "murdered": {
-                                "color": "purple",
-                                "text": "murdered",
-                                "index": 3
-                              },
-                              "winner": {
-                                "color": "yellow",
-                                "text": "winner",
-                                "index": 4
+                                "color": "#8F3BB8",
+                                "text": "Murdered",
+                                "index": 1
                               }
                             }
                           }
@@ -3394,27 +3418,27 @@
                             "options": {
                               "traitor": {
                                 "color": "red",
-                                "text": "traitor",
+                                "text": "Traitor",
                                 "index": 0
                               },
                               "faithful": {
                                 "color": "green",
-                                "text": "faithful",
+                                "text": "Faithful",
                                 "index": 1
                               },
                               "banished": {
                                 "color": "orange",
-                                "text": "banished",
+                                "text": "Banished",
                                 "index": 2
                               },
                               "murdered": {
                                 "color": "purple",
-                                "text": "murdered",
+                                "text": "Murdered",
                                 "index": 3
                               },
                               "winner": {
                                 "color": "yellow",
-                                "text": "winner",
+                                "text": "Winner",
                                 "index": 4
                               }
                             }
@@ -3488,27 +3512,27 @@
                             "options": {
                               "traitor": {
                                 "color": "red",
-                                "text": "traitor",
+                                "text": "Traitor",
                                 "index": 0
                               },
                               "faithful": {
                                 "color": "green",
-                                "text": "faithful",
+                                "text": "Faithful",
                                 "index": 1
                               },
                               "banished": {
                                 "color": "orange",
-                                "text": "banished",
+                                "text": "Banished",
                                 "index": 2
                               },
                               "murdered": {
                                 "color": "purple",
-                                "text": "murdered",
+                                "text": "Murdered",
                                 "index": 3
                               },
                               "winner": {
                                 "color": "yellow",
-                                "text": "winner",
+                                "text": "Winner",
                                 "index": 4
                               }
                             }
@@ -4495,27 +4519,27 @@
                             "options": {
                               "traitor": {
                                 "color": "red",
-                                "text": "traitor",
+                                "text": "Traitor",
                                 "index": 0
                               },
                               "faithful": {
                                 "color": "green",
-                                "text": "faithful",
+                                "text": "Faithful",
                                 "index": 1
                               },
                               "banished": {
                                 "color": "orange",
-                                "text": "banished",
+                                "text": "Banished",
                                 "index": 2
                               },
                               "murdered": {
                                 "color": "purple",
-                                "text": "murdered",
+                                "text": "Murdered",
                                 "index": 3
                               },
                               "winner": {
                                 "color": "yellow",
-                                "text": "winner",
+                                "text": "Winner",
                                 "index": 4
                               }
                             }
@@ -4593,27 +4617,27 @@
                             "options": {
                               "traitor": {
                                 "color": "red",
-                                "text": "traitor",
+                                "text": "Traitor",
                                 "index": 0
                               },
                               "faithful": {
                                 "color": "green",
-                                "text": "faithful",
+                                "text": "Faithful",
                                 "index": 1
                               },
                               "banished": {
                                 "color": "orange",
-                                "text": "banished",
+                                "text": "Banished",
                                 "index": 2
                               },
                               "murdered": {
                                 "color": "purple",
-                                "text": "murdered",
+                                "text": "Murdered",
                                 "index": 3
                               },
                               "winner": {
                                 "color": "yellow",
-                                "text": "winner",
+                                "text": "Winner",
                                 "index": 4
                               }
                             }

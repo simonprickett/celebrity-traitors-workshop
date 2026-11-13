@@ -97,15 +97,20 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "text",
-            "version": "",
+            "version": "13.4.0-41021278316",
             "spec": {
               "fieldConfig": {
                 "defaults": {},
                 "overrides": []
               },
               "options": {
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
                 "mode": "markdown",
-                "content": "**Verdict: Kenny played the best game overall. Sebastian was the best faithful.**\n\nThe data records outcomes and votes, not persuasion or the social game, so each side is judged on its own aim:\n\n- **A traitor** plays well by staying undetected: how many faithful votes they drew at the round tables they attended.\n- **A faithful** plays well by finding traitors: how often their vote landed on a player who was a traitor at that moment, and whether they survived to the end.\n\nAll data is read live from CSV files on GitHub, and every figure on this dashboard is calculated with SQL expressions."
+                "content": "# Celebrity Traitors: who played the best game?\n\n> ### \ud83c\udfc6 **Kenny** played the best game overall. **Sebastian** was the best faithful.\n\nThe data records **outcomes and votes**, not persuasion or the social game, so each side is judged on its own aim:\n\n| | \ud83d\udde1\ufe0f Traitor | \ud83d\udee1\ufe0f Faithful |\n|---|---|---|\n| **The aim** | Stay undetected | Find the traitors |\n| **The measure** | Faithful votes drawn per round table | Votes that landed on a traitor, and surviving to the end |\n\nEverything here is read live from CSV files on GitHub, and **every figure is a SQL expression**. Open any panel and look at query **Z**."
               }
             }
           }
@@ -115,8 +120,8 @@
         "kind": "Panel",
         "spec": {
           "id": 2,
-          "title": "Hall of fame",
-          "description": "Chosen by the data, not by hand: the traitor with the fewest faithful votes per round table, and the faithful whose votes most often landed on a traitor. The photo is the regular image and the second photo is the _out image, shown once a player has left the game.",
+          "title": "",
+          "description": "",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -310,33 +315,14 @@
                       }
                     }
                   }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "Z2",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "__expr__",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "__expr__"
-                      },
-                      "spec": {
-                        "expression": "WITH f AS (\n  SELECT x.player, CASE WHEN y.player IS NOT NULL THEN 1 ELSE 0 END AS hit\n  FROM A x\n  LEFT JOIN A y ON y.player = x.votedFor AND y.roundTable = x.roundTable AND y.status = 'traitor'\n  WHERE x.status = 'faithful' AND x.votedFor IS NOT NULL AND x.votedFor <> ''\n), fr AS (\n  SELECT player, SUM(hit) AS hits, COUNT(*) AS votes_cast FROM f GROUP BY player\n)\nSELECT 'Best faithful' AS award,\n       CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', fr.player, '.webp') AS photo,\n       CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', fr.player, '_out.webp') AS after_leaving,\n       COALESCE(NULLIF(b.knownAs, ''), CONCAT(b.firstName, ' ', b.lastName)) AS contestant,\n       CONCAT(fr.hits, ' of ', fr.votes_cast, ' votes landed on a traitor') AS why\nFROM fr JOIN B b ON b.name = fr.player\nORDER BY fr.hits DESC, fr.hits / fr.votes_cast DESC\nLIMIT 1",
-                        "type": "sql"
-                      }
-                    }
-                  }
                 }
               ],
               "queryOptions": {},
               "transformations": [
                 {
-                  "kind": "merge",
+                  "kind": "Transformation",
+                  "group": "merge",
                   "spec": {
-                    "id": "merge",
                     "options": {}
                   }
                 }
@@ -345,114 +331,22 @@
           },
           "vizConfig": {
             "kind": "VizConfig",
-            "group": "table",
-            "version": "",
+            "group": "text",
+            "version": "13.4.0-41021278316",
             "spec": {
               "fieldConfig": {
-                "defaults": {
-                  "custom": {
-                    "cellOptions": {
-                      "type": "auto"
-                    },
-                    "align": "auto",
-                    "filterable": false,
-                    "inspect": false
-                  }
-                },
-                "overrides": [
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "photo"
-                    },
-                    "properties": [
-                      {
-                        "id": "custom.cellOptions",
-                        "value": {
-                          "type": "image",
-                          "alt": "",
-                          "title": ""
-                        }
-                      },
-                      {
-                        "id": "custom.width",
-                        "value": 130
-                      },
-                      {
-                        "id": "displayName",
-                        "value": " "
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "after_leaving"
-                    },
-                    "properties": [
-                      {
-                        "id": "custom.cellOptions",
-                        "value": {
-                          "type": "image",
-                          "alt": "",
-                          "title": ""
-                        }
-                      },
-                      {
-                        "id": "custom.width",
-                        "value": 130
-                      },
-                      {
-                        "id": "displayName",
-                        "value": " "
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "award"
-                    },
-                    "properties": [
-                      {
-                        "id": "custom.width",
-                        "value": 120
-                      },
-                      {
-                        "id": "custom.cellOptions",
-                        "value": {
-                          "type": "color-text"
-                        }
-                      },
-                      {
-                        "id": "color",
-                        "value": {
-                          "mode": "fixed",
-                          "fixedColor": "yellow"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "contestant"
-                    },
-                    "properties": [
-                      {
-                        "id": "custom.width",
-                        "value": 150
-                      }
-                    ]
-                  }
-                ]
+                "defaults": {},
+                "overrides": []
               },
               "options": {
-                "cellHeight": "lg",
-                "showHeader": true,
-                "footer": {
-                  "show": false
-                }
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "<div style=\"box-sizing:border-box;padding:12px 18px;border-radius:10px;background:rgba(242,73,92,0.10);border:1px solid rgba(242,73,92,0.5)\">\n  <div style=\"font-size:13px;text-transform:uppercase;letter-spacing:2px;color:#F2495C;font-weight:700\">&#127942; {{award}}</div>\n  <div style=\"font-size:26px;font-weight:700;margin:2px 0 4px\">{{contestant}}</div>\n  <div style=\"font-size:13px;opacity:0.8\">{{why}}</div>\n</div>",
+                "mode": "html",
+                "renderMode": "perRow"
               }
             }
           }
@@ -1306,7 +1200,7 @@
                     "cellOptions": {
                       "type": "auto"
                     },
-                    "align": "auto",
+                    "align": "center",
                     "filterable": false,
                     "inspect": false
                   }
@@ -1343,8 +1237,32 @@
                     },
                     "properties": [
                       {
+                        "id": "displayName",
+                        "value": "Traitor"
+                      },
+                      {
                         "id": "custom.width",
                         "value": 170
+                      },
+                      {
+                        "id": "custom.align",
+                        "value": "left"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "round_tables"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Round tables"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 110
                       }
                     ]
                   },
@@ -1355,11 +1273,24 @@
                     },
                     "properties": [
                       {
+                        "id": "displayName",
+                        "value": "Faithful votes against"
+                      },
+                      {
                         "id": "custom.cellOptions",
                         "value": {
-                          "type": "color-background",
-                          "mode": "gradient"
+                          "type": "gauge",
+                          "mode": "gradient",
+                          "valueDisplayMode": "text"
                         }
+                      },
+                      {
+                        "id": "min",
+                        "value": 0
+                      },
+                      {
+                        "id": "max",
+                        "value": 30
                       },
                       {
                         "id": "color",
@@ -1388,15 +1319,36 @@
                         }
                       }
                     ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "votes_per_round_table"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Per round table"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 130
+                      },
+                      {
+                        "id": "decimals",
+                        "value": 2
+                      }
+                    ]
                   }
                 ]
               },
               "options": {
-                "cellHeight": "md",
+                "cellHeight": "lg",
                 "showHeader": true,
                 "footer": {
                   "show": false
-                }
+                },
+                "zebraStriping": true
               }
             }
           }
@@ -1606,9 +1558,9 @@
               "queryOptions": {},
               "transformations": [
                 {
-                  "kind": "groupingToMatrix",
+                  "kind": "Transformation",
+                  "group": "groupingToMatrix",
                   "spec": {
-                    "id": "groupingToMatrix",
                     "options": {
                       "columnField": "traitor",
                       "rowField": "round_table",
@@ -1875,7 +1827,7 @@
                     "cellOptions": {
                       "type": "auto"
                     },
-                    "align": "auto",
+                    "align": "center",
                     "filterable": false,
                     "inspect": false
                   }
@@ -1912,8 +1864,32 @@
                     },
                     "properties": [
                       {
+                        "id": "displayName",
+                        "value": "Faithful"
+                      },
+                      {
                         "id": "custom.width",
-                        "value": 180
+                        "value": 190
+                      },
+                      {
+                        "id": "custom.align",
+                        "value": "left"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "votes_cast"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Votes cast"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 110
                       }
                     ]
                   },
@@ -1924,17 +1900,15 @@
                     },
                     "properties": [
                       {
-                        "id": "custom.cellOptions",
-                        "value": {
-                          "type": "color-background",
-                          "mode": "gradient"
-                        }
+                        "id": "displayName",
+                        "value": "Votes at traitors"
                       },
                       {
-                        "id": "color",
+                        "id": "custom.cellOptions",
                         "value": {
-                          "mode": "continuous-GrYlRd",
-                          "seriesBy": "last"
+                          "type": "gauge",
+                          "mode": "gradient",
+                          "valueDisplayMode": "text"
                         }
                       },
                       {
@@ -1944,17 +1918,118 @@
                       {
                         "id": "max",
                         "value": 6
+                      },
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "thresholds"
+                        }
+                      },
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "red",
+                              "value": null
+                            },
+                            {
+                              "color": "yellow",
+                              "value": 2
+                            },
+                            {
+                              "color": "green",
+                              "value": 4
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "hit_rate_pct"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Hit rate"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "gauge",
+                          "mode": "gradient",
+                          "valueDisplayMode": "text"
+                        }
+                      },
+                      {
+                        "id": "min",
+                        "value": 0
+                      },
+                      {
+                        "id": "max",
+                        "value": 100
+                      },
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "thresholds"
+                        }
+                      },
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "red",
+                              "value": null
+                            },
+                            {
+                              "color": "yellow",
+                              "value": 30
+                            },
+                            {
+                              "color": "green",
+                              "value": 50
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "id": "unit",
+                        "value": "percent"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "shield_episodes"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Shields"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 90
                       }
                     ]
                   }
                 ]
               },
               "options": {
-                "cellHeight": "md",
+                "cellHeight": "lg",
                 "showHeader": true,
                 "footer": {
                   "show": false
-                }
+                },
+                "zebraStriping": true
               }
             }
           }
@@ -2164,9 +2239,9 @@
               "queryOptions": {},
               "transformations": [
                 {
-                  "kind": "organize",
+                  "kind": "Transformation",
+                  "group": "organize",
                   "spec": {
-                    "id": "organize",
                     "options": {
                       "excludeByName": {
                         "photo": true,
@@ -2434,7 +2509,7 @@
                     "cellOptions": {
                       "type": "auto"
                     },
-                    "align": "auto",
+                    "align": "center",
                     "filterable": false,
                     "inspect": false
                   }
@@ -2443,24 +2518,32 @@
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "voted_for_photo"
+                      "options": "episode"
                     },
                     "properties": [
                       {
-                        "id": "custom.cellOptions",
-                        "value": {
-                          "type": "image",
-                          "alt": "",
-                          "title": ""
-                        }
+                        "id": "displayName",
+                        "value": "Episode"
                       },
                       {
                         "id": "custom.width",
-                        "value": 70
-                      },
+                        "value": 90
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "round_table"
+                    },
+                    "properties": [
                       {
                         "id": "displayName",
-                        "value": " "
+                        "value": "Round table"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 120
                       }
                     ]
                   },
@@ -2470,6 +2553,14 @@
                       "options": "status"
                     },
                     "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Status"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 110
+                      },
                       {
                         "id": "mappings",
                         "value": [
@@ -2508,7 +2599,8 @@
                       {
                         "id": "custom.cellOptions",
                         "value": {
-                          "type": "color-text"
+                          "type": "color-background",
+                          "mode": "basic"
                         }
                       }
                     ]
@@ -2516,24 +2608,40 @@
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "episode"
+                      "options": "voted_for_photo"
                     },
                     "properties": [
                       {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "image",
+                          "alt": "",
+                          "title": ""
+                        }
+                      },
+                      {
                         "id": "custom.width",
                         "value": 80
+                      },
+                      {
+                        "id": "displayName",
+                        "value": " "
                       }
                     ]
                   },
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "round_table"
+                      "options": "voted_for"
                     },
                     "properties": [
                       {
-                        "id": "custom.width",
-                        "value": 100
+                        "id": "displayName",
+                        "value": "Voted for"
+                      },
+                      {
+                        "id": "custom.align",
+                        "value": "left"
                       }
                     ]
                   },
@@ -2544,19 +2652,36 @@
                     },
                     "properties": [
                       {
+                        "id": "displayName",
+                        "value": "Votes"
+                      },
+                      {
                         "id": "custom.width",
-                        "value": 70
+                        "value": 80
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "power"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Power"
                       }
                     ]
                   }
                 ]
               },
               "options": {
-                "cellHeight": "md",
+                "cellHeight": "lg",
                 "showHeader": true,
                 "footer": {
                   "show": false
-                }
+                },
+                "zebraStriping": true
               }
             }
           }
@@ -2778,12 +2903,44 @@
                     "cellOptions": {
                       "type": "auto"
                     },
-                    "align": "auto",
+                    "align": "center",
                     "filterable": false,
                     "inspect": false
                   }
                 },
                 "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "episode"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Episode"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 90
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "round_table"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Round table"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 120
+                      }
+                    ]
+                  },
                   {
                     "matcher": {
                       "id": "byName",
@@ -2811,9 +2968,37 @@
                   {
                     "matcher": {
                       "id": "byName",
+                      "options": "contestant"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Contestant"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 190
+                      },
+                      {
+                        "id": "custom.align",
+                        "value": "left"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
                       "options": "status_when_out"
                     },
                     "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Status"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 120
+                      },
                       {
                         "id": "mappings",
                         "value": [
@@ -2852,7 +3037,8 @@
                       {
                         "id": "custom.cellOptions",
                         "value": {
-                          "type": "color-text"
+                          "type": "color-background",
+                          "mode": "basic"
                         }
                       }
                     ]
@@ -2864,6 +3050,14 @@
                     },
                     "properties": [
                       {
+                        "id": "displayName",
+                        "value": "Outcome"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 120
+                      },
+                      {
                         "id": "mappings",
                         "value": [
                           {
@@ -2901,7 +3095,8 @@
                       {
                         "id": "custom.cellOptions",
                         "value": {
-                          "type": "color-text"
+                          "type": "color-background",
+                          "mode": "basic"
                         }
                       }
                     ]
@@ -2909,11 +3104,12 @@
                 ]
               },
               "options": {
-                "cellHeight": "md",
+                "cellHeight": "lg",
                 "showHeader": true,
                 "footer": {
                   "show": false
-                }
+                },
+                "zebraStriping": true
               }
             }
           }
@@ -3110,12 +3306,28 @@
                     "cellOptions": {
                       "type": "auto"
                     },
-                    "align": "auto",
+                    "align": "center",
                     "filterable": false,
                     "inspect": false
                   }
                 },
                 "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "round"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Round"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 90
+                      }
+                    ]
+                  },
                   {
                     "matcher": {
                       "id": "byName",
@@ -3143,9 +3355,37 @@
                   {
                     "matcher": {
                       "id": "byName",
+                      "options": "contestant"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Contestant"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 200
+                      },
+                      {
+                        "id": "custom.align",
+                        "value": "left"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
                       "options": "status"
                     },
                     "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Status"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 120
+                      },
                       {
                         "id": "mappings",
                         "value": [
@@ -3184,8 +3424,45 @@
                       {
                         "id": "custom.cellOptions",
                         "value": {
-                          "type": "color-text"
+                          "type": "color-background",
+                          "mode": "basic"
                         }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "decision"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Decision"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 120
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "voted_for"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Voted for"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 140
+                      },
+                      {
+                        "id": "custom.align",
+                        "value": "left"
                       }
                     ]
                   },
@@ -3196,6 +3473,14 @@
                     },
                     "properties": [
                       {
+                        "id": "displayName",
+                        "value": "Outcome"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 120
+                      },
+                      {
                         "id": "mappings",
                         "value": [
                           {
@@ -3233,31 +3518,21 @@
                       {
                         "id": "custom.cellOptions",
                         "value": {
-                          "type": "color-text"
+                          "type": "color-background",
+                          "mode": "basic"
                         }
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "round"
-                    },
-                    "properties": [
-                      {
-                        "id": "custom.width",
-                        "value": 70
                       }
                     ]
                   }
                 ]
               },
               "options": {
-                "cellHeight": "md",
+                "cellHeight": "lg",
                 "showHeader": true,
                 "footer": {
                   "show": false
-                }
+                },
+                "zebraStriping": true
               }
             }
           }
@@ -3298,15 +3573,20 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "text",
-            "version": "",
+            "version": "13.4.0-41021278316",
             "spec": {
               "fieldConfig": {
                 "defaults": {},
                 "overrides": []
               },
               "options": {
-                "mode": "markdown",
-                "content": "- Each panel loads `main_game.csv`, `contestants.csv` and/or `end_game.csv` from this repository's `data/csv/` folder on `raw.githubusercontent.com`, using the Infinity data source. Photos come from `data/images/`: `<name>.webp`, and `<name>_out.webp` once a player has left.\n- Each figure is a **SQL expression** over those CSV queries (open a panel and look at query **Z**).\n- A vote is \"at a traitor\" if the player voted for was a traitor at the **same round table**. \"Faithful votes against\" only counts votes from players who were faithful at that table, and a dagger vote counts as 2.\n- A player's status can change: Kenny is faithful until the episode 5 round table and a traitor from episode 6, so he appears in both the traitor and faithful tables.\n- **Caveats:** samples are small (Kenny's faithful accuracy rests on 4 votes); winners are read from the `winner` markers in the end game data; other definitions of \"best\" would give other answers."
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "### How these figures are calculated\n\n1. **Data:** each panel loads `main_game.csv`, `contestants.csv` and/or `end_game.csv` from this repo's `data/csv/` folder on `raw.githubusercontent.com`, using the **Infinity** data source. Photos come from `data/images/`.\n2. **SQL:** each figure is a **SQL expression** over those CSV queries. Open a panel and look at query **Z**.\n3. **\"At a traitor\":** a vote counts if the player voted for was a traitor at the **same round table**. \"Faithful votes against\" only counts votes from players who were faithful at that table, and a **dagger** vote counts as 2.\n4. **Status changes:** Kenny is faithful until the episode 5 round table and a traitor from episode 6, so he appears in both the traitor and faithful tables.\n\n> \u26a0\ufe0f **Caveats:** samples are small (Kenny's faithful accuracy rests on 4 votes); winners are read from the `winner` markers in the end game data; other definitions of \"best\" would give other answers.",
+                "mode": "markdown"
               }
             }
           }
@@ -4055,12 +4335,102 @@
                     "cellOptions": {
                       "type": "auto"
                     },
-                    "align": "auto",
+                    "align": "center",
                     "filterable": false,
                     "inspect": false
                   }
                 },
                 "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "episode"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Episode"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 90
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "round_table"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Round table"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 120
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "status"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Status"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 110
+                      },
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "type": "value",
+                            "options": {
+                              "traitor": {
+                                "color": "red",
+                                "text": "traitor",
+                                "index": 0
+                              },
+                              "faithful": {
+                                "color": "green",
+                                "text": "faithful",
+                                "index": 1
+                              },
+                              "banished": {
+                                "color": "orange",
+                                "text": "banished",
+                                "index": 2
+                              },
+                              "murdered": {
+                                "color": "purple",
+                                "text": "murdered",
+                                "index": 3
+                              },
+                              "winner": {
+                                "color": "yellow",
+                                "text": "winner",
+                                "index": 4
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background",
+                          "mode": "basic"
+                        }
+                      }
+                    ]
+                  },
                   {
                     "matcher": {
                       "id": "byName",
@@ -4077,7 +4447,7 @@
                       },
                       {
                         "id": "custom.width",
-                        "value": 70
+                        "value": 80
                       },
                       {
                         "id": "displayName",
@@ -4088,49 +4458,16 @@
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "status"
+                      "options": "voted_for"
                     },
                     "properties": [
                       {
-                        "id": "mappings",
-                        "value": [
-                          {
-                            "type": "value",
-                            "options": {
-                              "traitor": {
-                                "color": "red",
-                                "text": "traitor",
-                                "index": 0
-                              },
-                              "faithful": {
-                                "color": "green",
-                                "text": "faithful",
-                                "index": 1
-                              },
-                              "banished": {
-                                "color": "orange",
-                                "text": "banished",
-                                "index": 2
-                              },
-                              "murdered": {
-                                "color": "purple",
-                                "text": "murdered",
-                                "index": 3
-                              },
-                              "winner": {
-                                "color": "yellow",
-                                "text": "winner",
-                                "index": 4
-                              }
-                            }
-                          }
-                        ]
+                        "id": "displayName",
+                        "value": "Voted for"
                       },
                       {
-                        "id": "custom.cellOptions",
-                        "value": {
-                          "type": "color-text"
-                        }
+                        "id": "custom.align",
+                        "value": "left"
                       }
                     ]
                   },
@@ -4141,6 +4478,14 @@
                     },
                     "properties": [
                       {
+                        "id": "displayName",
+                        "value": "Was"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 110
+                      },
+                      {
                         "id": "mappings",
                         "value": [
                           {
@@ -4178,32 +4523,9 @@
                       {
                         "id": "custom.cellOptions",
                         "value": {
-                          "type": "color-text"
+                          "type": "color-background",
+                          "mode": "basic"
                         }
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "episode"
-                    },
-                    "properties": [
-                      {
-                        "id": "custom.width",
-                        "value": 80
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "round_table"
-                    },
-                    "properties": [
-                      {
-                        "id": "custom.width",
-                        "value": 100
                       }
                     ]
                   },
@@ -4214,19 +4536,36 @@
                     },
                     "properties": [
                       {
+                        "id": "displayName",
+                        "value": "Votes"
+                      },
+                      {
                         "id": "custom.width",
-                        "value": 70
+                        "value": 80
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "power"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Power"
                       }
                     ]
                   }
                 ]
               },
               "options": {
-                "cellHeight": "md",
+                "cellHeight": "lg",
                 "showHeader": true,
                 "footer": {
                   "show": false
-                }
+                },
+                "zebraStriping": true
               }
             }
           }
@@ -4236,7 +4575,7 @@
         "kind": "Panel",
         "spec": {
           "id": 20,
-          "title": "Why Kenny?",
+          "title": "",
           "description": "",
           "links": [],
           "data": {
@@ -4267,15 +4606,20 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "text",
-            "version": "",
+            "version": "13.4.0-41021278316",
             "spec": {
               "fieldConfig": {
                 "defaults": {},
                 "overrides": []
               },
               "options": {
-                "mode": "markdown",
-                "content": "- Recruited in episode 5, **after** that episode's round table, so he voted at it as a faithful.\n- As a traitor he attended **6 round tables** and **no faithful ever voted for him**.\n- Used the **dagger** in episode 8, doubling his vote in both round tables (Sharon, then Joanne).\n- Reached the end game, where Romesh and Sebastian voted him out in round 3.\n- The other traitors were all voted for far more: Maya 3, James 5, Hannah 17 and Richard 13 faithful votes."
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "<div style='border-left:4px solid #FF9830;padding:4px 18px'><h3 style='margin:0 0 6px'>&#128481;&#65039; Why Kenny?</h3><ul style='padding-left:18px;line-height:1.5'><li style='margin:6px 0'>Recruited in episode 5, <b>after</b> that round table, so he voted at it as a faithful.</li><li style='margin:6px 0'>As a traitor he attended <b>6 round tables</b> and <b>no faithful ever voted for him</b>.</li><li style='margin:6px 0'>Used the <b>dagger</b> in episode 8, doubling his vote in both round tables (Sharon, then Joanne).</li><li style='margin:6px 0'>Reached the end game, where Romesh and Sebastian voted him out in round 3.</li><li style='margin:6px 0'>The other traitors were voted for far more: Maya 3, James 5, Richard 13 and Hannah 17 faithful votes.</li></ul></div>",
+                "mode": "html"
               }
             }
           }
@@ -4285,7 +4629,7 @@
         "kind": "Panel",
         "spec": {
           "id": 21,
-          "title": "Why Sebastian?",
+          "title": "",
           "description": "",
           "links": [],
           "data": {
@@ -4316,15 +4660,1801 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "text",
-            "version": "",
+            "version": "13.4.0-41021278316",
             "spec": {
               "fieldConfig": {
                 "defaults": {},
                 "overrides": []
               },
               "options": {
-                "mode": "markdown",
-                "content": "- Cast **5 votes that landed on a traitor**, more than any other faithful (James, Leigh-Anne and Romesh had 4).\n- Voted for **Richard** (round table 1), **Hannah** (round tables 3 and 4), **James** (round table 9) and **Maya** (round table 10), all traitors at the time.\n- Held a **shield** in episodes 2 and 4.\n- Reached the end game, voted for Kenny in rounds 2 and 3, and is marked **winner** in the final round.\n- Small samples flatter percentages, so raw counts are used rather than hit rates."
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "<div style='border-left:4px solid #73BF69;padding:4px 18px'><h3 style='margin:0 0 6px'>&#128737;&#65039; Why Sebastian?</h3><ul style='padding-left:18px;line-height:1.5'><li style='margin:6px 0'>Cast <b>5 votes that landed on a traitor</b>, more than any other faithful (James, Leigh-Anne and Romesh had 4).</li><li style='margin:6px 0'>Voted for <b>Richard</b> (round table 1), <b>Hannah</b> (round tables 3 and 4), <b>James</b> (9) and <b>Maya</b> (10), all traitors at the time.</li><li style='margin:6px 0'>Held a <b>shield</b> in episodes 2 and 4.</li><li style='margin:6px 0'>Reached the end game, voted for Kenny in rounds 2 and 3, and is marked <b>winner</b> in the final round.</li><li style='margin:6px 0'>Small samples flatter percentages, so raw counts are used rather than hit rates.</li></ul></div>",
+                "mode": "html"
+              }
+            }
+          }
+        }
+      },
+      "panel-30": {
+        "kind": "Panel",
+        "spec": {
+          "id": 30,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "A",
+                    "hidden": false,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "grafana-testdata-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "grafana-testdata-datasource"
+                      },
+                      "spec": {
+                        "scenarioId": "csv_metric_values",
+                        "stringInput": "1"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "dalvany-image-panel",
+            "version": "4.0.0",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              },
+              "options": {
+                "alt_field": "",
+                "autofit": true,
+                "baseUrl": "",
+                "height": "100%",
+                "icon_field": "",
+                "open_url": {
+                  "base_url": "",
+                  "enable": false,
+                  "metric_field": "",
+                  "open_in_tab": false,
+                  "suffix": ""
+                },
+                "overlay": {
+                  "bindings": {
+                    "bindings": [],
+                    "has_text": false,
+                    "unbounded": "#66666620"
+                  },
+                  "field": "",
+                  "height": {
+                    "size": 5,
+                    "unit": "%"
+                  },
+                  "position": "Top right",
+                  "width": {
+                    "size": 5,
+                    "unit": "%"
+                  }
+                },
+                "shared_cross_hair": {
+                  "backgroundColor": "#FFFFFF10",
+                  "borderColor": "#FFFFFF20"
+                },
+                "singleFill": true,
+                "slideshow": {
+                  "duration": 5000,
+                  "enable": false,
+                  "infinite": true,
+                  "pauseOnHover": true,
+                  "transition": "Slide",
+                  "transition_duration": 1000
+                },
+                "suffix": "",
+                "tooltip": false,
+                "tooltip_date_elapsed": false,
+                "tooltip_field": "",
+                "tooltip_include_date": false,
+                "tooltip_include_field": true,
+                "underline": {
+                  "bindings": {
+                    "bindings": [],
+                    "has_text": true,
+                    "unbounded": "#CCCCDCFF"
+                  },
+                  "bindings_field": "",
+                  "field": "",
+                  "text_align": "left",
+                  "text_size": "14"
+                },
+                "width": "100%",
+                "fallback": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/ensemble.webp"
+              }
+            }
+          }
+        }
+      },
+      "panel-41": {
+        "kind": "Panel",
+        "spec": {
+          "id": 41,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "A",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/main_game.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "player",
+                            "text": "player",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "episode",
+                            "text": "episode",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "episodeDate",
+                            "text": "episodeDate",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "roundTable",
+                            "text": "roundTable",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "status",
+                            "text": "status",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "shield",
+                            "text": "shield",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votedFor",
+                            "text": "votedFor",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votes",
+                            "text": "votes",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "outcome",
+                            "text": "outcome",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "recruitment",
+                            "text": "recruitment",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "power",
+                            "text": "power",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "B",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/contestants.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "name",
+                            "text": "name",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "firstName",
+                            "text": "firstName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "lastName",
+                            "text": "lastName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "knownAs",
+                            "text": "knownAs",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "profession",
+                            "text": "profession",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "age",
+                            "text": "age",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "gender",
+                            "text": "gender",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "nationality",
+                            "text": "nationality",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "wikipedia",
+                            "text": "wikipedia",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "Z2",
+                    "hidden": false,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
+                      "spec": {
+                        "expression": "WITH f AS (\n  SELECT x.player, CASE WHEN y.player IS NOT NULL THEN 1 ELSE 0 END AS hit\n  FROM A x\n  LEFT JOIN A y ON y.player = x.votedFor AND y.roundTable = x.roundTable AND y.status = 'traitor'\n  WHERE x.status = 'faithful' AND x.votedFor IS NOT NULL AND x.votedFor <> ''\n), fr AS (\n  SELECT player, SUM(hit) AS hits, COUNT(*) AS votes_cast FROM f GROUP BY player\n)\nSELECT 'Best faithful' AS award,\n       CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', fr.player, '.webp') AS photo,\n       CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', fr.player, '_out.webp') AS after_leaving,\n       COALESCE(NULLIF(b.knownAs, ''), CONCAT(b.firstName, ' ', b.lastName)) AS contestant,\n       CONCAT(fr.hits, ' of ', fr.votes_cast, ' votes landed on a traitor') AS why\nFROM fr JOIN B b ON b.name = fr.player\nORDER BY fr.hits DESC, fr.hits / fr.votes_cast DESC\nLIMIT 1",
+                        "type": "sql"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "merge",
+                  "spec": {
+                    "options": {}
+                  }
+                }
+              ]
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "text",
+            "version": "13.4.0-41021278316",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              },
+              "options": {
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "<div style=\"box-sizing:border-box;padding:12px 18px;border-radius:10px;background:rgba(115,191,105,0.10);border:1px solid rgba(115,191,105,0.5)\">\n  <div style=\"font-size:13px;text-transform:uppercase;letter-spacing:2px;color:#73BF69;font-weight:700\">&#127942; {{award}}</div>\n  <div style=\"font-size:26px;font-weight:700;margin:2px 0 4px\">{{contestant}}</div>\n  <div style=\"font-size:13px;opacity:0.8\">{{why}}</div>\n</div>",
+                "mode": "html",
+                "renderMode": "perRow"
+              }
+            }
+          }
+        }
+      },
+      "panel-33": {
+        "kind": "Panel",
+        "spec": {
+          "id": 33,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "A",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/main_game.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "player",
+                            "text": "player",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "episode",
+                            "text": "episode",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "episodeDate",
+                            "text": "episodeDate",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "roundTable",
+                            "text": "roundTable",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "status",
+                            "text": "status",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "shield",
+                            "text": "shield",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votedFor",
+                            "text": "votedFor",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votes",
+                            "text": "votes",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "outcome",
+                            "text": "outcome",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "recruitment",
+                            "text": "recruitment",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "power",
+                            "text": "power",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "B",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/contestants.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "name",
+                            "text": "name",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "firstName",
+                            "text": "firstName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "lastName",
+                            "text": "lastName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "knownAs",
+                            "text": "knownAs",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "profession",
+                            "text": "profession",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "age",
+                            "text": "age",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "gender",
+                            "text": "gender",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "nationality",
+                            "text": "nationality",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "wikipedia",
+                            "text": "wikipedia",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "C",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/end_game.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "player",
+                            "text": "player",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "round",
+                            "text": "round",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "status",
+                            "text": "status",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "decision",
+                            "text": "decision",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votedFor",
+                            "text": "votedFor",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "outcome",
+                            "text": "outcome",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "Z",
+                    "hidden": false,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
+                      "spec": {
+                        "expression": "WITH t AS (\n  SELECT player, roundTable FROM A WHERE status = 'traitor' AND roundTable IS NOT NULL\n), v AS (\n  SELECT votedFor, roundTable, SUM(votes) AS votes\n  FROM A\n  WHERE status = 'faithful' AND votedFor IS NOT NULL AND votedFor <> ''\n  GROUP BY votedFor, roundTable\n), tr AS (\n  SELECT t.player, COUNT(*) AS rts, COALESCE(SUM(v.votes), 0) AS votes_against\n  FROM t LEFT JOIN v ON v.votedFor = t.player AND v.roundTable = t.roundTable\n  GROUP BY t.player\n)\nSELECT CONCAT(tr.player, CASE WHEN (SELECT COUNT(*) FROM A WHERE A.player = tr.player AND A.outcome IN ('banished','murdered')) + (SELECT COUNT(*) FROM C WHERE C.player = tr.player AND C.outcome = 'banished') > 0 THEN '_out' ELSE '' END) AS player FROM tr JOIN B b ON b.name = tr.player ORDER BY tr.votes_against / tr.rts ASC, tr.rts DESC LIMIT 1",
+                        "type": "sql"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "dalvany-image-panel",
+            "version": "4.0.0",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              },
+              "options": {
+                "alt_field": "",
+                "autofit": true,
+                "baseUrl": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/",
+                "height": "100%",
+                "icon_field": "player",
+                "open_url": {
+                  "base_url": "",
+                  "enable": false,
+                  "metric_field": "",
+                  "open_in_tab": false,
+                  "suffix": ""
+                },
+                "overlay": {
+                  "bindings": {
+                    "bindings": [],
+                    "has_text": false,
+                    "unbounded": "#66666620"
+                  },
+                  "field": "",
+                  "height": {
+                    "size": 5,
+                    "unit": "%"
+                  },
+                  "position": "Top right",
+                  "width": {
+                    "size": 5,
+                    "unit": "%"
+                  }
+                },
+                "shared_cross_hair": {
+                  "backgroundColor": "#FFFFFF10",
+                  "borderColor": "#FFFFFF20"
+                },
+                "singleFill": true,
+                "slideshow": {
+                  "duration": 5000,
+                  "enable": false,
+                  "infinite": true,
+                  "pauseOnHover": true,
+                  "transition": "Slide",
+                  "transition_duration": 1000
+                },
+                "suffix": ".webp",
+                "tooltip": false,
+                "tooltip_date_elapsed": false,
+                "tooltip_field": "",
+                "tooltip_include_date": false,
+                "tooltip_include_field": true,
+                "underline": {
+                  "bindings": {
+                    "bindings": [],
+                    "has_text": true,
+                    "unbounded": "#CCCCDCFF"
+                  },
+                  "bindings_field": "",
+                  "field": "",
+                  "text_align": "left",
+                  "text_size": "14"
+                },
+                "width": "100%"
+              }
+            }
+          }
+        }
+      },
+      "panel-35": {
+        "kind": "Panel",
+        "spec": {
+          "id": 35,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "A",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/main_game.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "player",
+                            "text": "player",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "episode",
+                            "text": "episode",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "episodeDate",
+                            "text": "episodeDate",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "roundTable",
+                            "text": "roundTable",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "status",
+                            "text": "status",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "shield",
+                            "text": "shield",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votedFor",
+                            "text": "votedFor",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votes",
+                            "text": "votes",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "outcome",
+                            "text": "outcome",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "recruitment",
+                            "text": "recruitment",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "power",
+                            "text": "power",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "B",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/contestants.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "name",
+                            "text": "name",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "firstName",
+                            "text": "firstName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "lastName",
+                            "text": "lastName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "knownAs",
+                            "text": "knownAs",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "profession",
+                            "text": "profession",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "age",
+                            "text": "age",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "gender",
+                            "text": "gender",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "nationality",
+                            "text": "nationality",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "wikipedia",
+                            "text": "wikipedia",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "C",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/end_game.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "player",
+                            "text": "player",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "round",
+                            "text": "round",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "status",
+                            "text": "status",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "decision",
+                            "text": "decision",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votedFor",
+                            "text": "votedFor",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "outcome",
+                            "text": "outcome",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "Z",
+                    "hidden": false,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
+                      "spec": {
+                        "expression": "WITH f AS (\n  SELECT x.player, CASE WHEN y.player IS NOT NULL THEN 1 ELSE 0 END AS hit\n  FROM A x\n  LEFT JOIN A y ON y.player = x.votedFor AND y.roundTable = x.roundTable AND y.status = 'traitor'\n  WHERE x.status = 'faithful' AND x.votedFor IS NOT NULL AND x.votedFor <> ''\n), fr AS (\n  SELECT player, SUM(hit) AS hits, COUNT(*) AS votes_cast FROM f GROUP BY player\n)\nSELECT CONCAT(fr.player, CASE WHEN (SELECT COUNT(*) FROM A WHERE A.player = fr.player AND A.outcome IN ('banished','murdered')) + (SELECT COUNT(*) FROM C WHERE C.player = fr.player AND C.outcome = 'banished') > 0 THEN '_out' ELSE '' END) AS player FROM fr JOIN B b ON b.name = fr.player ORDER BY fr.hits DESC, fr.hits / fr.votes_cast DESC LIMIT 1",
+                        "type": "sql"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "dalvany-image-panel",
+            "version": "4.0.0",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              },
+              "options": {
+                "alt_field": "",
+                "autofit": true,
+                "baseUrl": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/",
+                "height": "100%",
+                "icon_field": "player",
+                "open_url": {
+                  "base_url": "",
+                  "enable": false,
+                  "metric_field": "",
+                  "open_in_tab": false,
+                  "suffix": ""
+                },
+                "overlay": {
+                  "bindings": {
+                    "bindings": [],
+                    "has_text": false,
+                    "unbounded": "#66666620"
+                  },
+                  "field": "",
+                  "height": {
+                    "size": 5,
+                    "unit": "%"
+                  },
+                  "position": "Top right",
+                  "width": {
+                    "size": 5,
+                    "unit": "%"
+                  }
+                },
+                "shared_cross_hair": {
+                  "backgroundColor": "#FFFFFF10",
+                  "borderColor": "#FFFFFF20"
+                },
+                "singleFill": true,
+                "slideshow": {
+                  "duration": 5000,
+                  "enable": false,
+                  "infinite": true,
+                  "pauseOnHover": true,
+                  "transition": "Slide",
+                  "transition_duration": 1000
+                },
+                "suffix": ".webp",
+                "tooltip": false,
+                "tooltip_date_elapsed": false,
+                "tooltip_field": "",
+                "tooltip_include_date": false,
+                "tooltip_include_field": true,
+                "underline": {
+                  "bindings": {
+                    "bindings": [],
+                    "has_text": true,
+                    "unbounded": "#CCCCDCFF"
+                  },
+                  "bindings_field": "",
+                  "field": "",
+                  "text_align": "left",
+                  "text_size": "14"
+                },
+                "width": "100%"
+              }
+            }
+          }
+        }
+      },
+      "panel-31": {
+        "kind": "Panel",
+        "spec": {
+          "id": 31,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "A",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/main_game.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "player",
+                            "text": "player",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "episode",
+                            "text": "episode",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "episodeDate",
+                            "text": "episodeDate",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "roundTable",
+                            "text": "roundTable",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "status",
+                            "text": "status",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "shield",
+                            "text": "shield",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votedFor",
+                            "text": "votedFor",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votes",
+                            "text": "votes",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "outcome",
+                            "text": "outcome",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "recruitment",
+                            "text": "recruitment",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "power",
+                            "text": "power",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "B",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/contestants.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "name",
+                            "text": "name",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "firstName",
+                            "text": "firstName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "lastName",
+                            "text": "lastName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "knownAs",
+                            "text": "knownAs",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "profession",
+                            "text": "profession",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "age",
+                            "text": "age",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "gender",
+                            "text": "gender",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "nationality",
+                            "text": "nationality",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "wikipedia",
+                            "text": "wikipedia",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "C",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/end_game.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "player",
+                            "text": "player",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "round",
+                            "text": "round",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "status",
+                            "text": "status",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "decision",
+                            "text": "decision",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votedFor",
+                            "text": "votedFor",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "outcome",
+                            "text": "outcome",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "Z",
+                    "hidden": false,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
+                      "spec": {
+                        "expression": "SELECT CONCAT('kenny', CASE WHEN (SELECT COUNT(*) FROM A WHERE A.player = 'kenny' AND A.outcome IN ('banished','murdered')) + (SELECT COUNT(*) FROM C WHERE C.player = 'kenny' AND C.outcome = 'banished') > 0 THEN '_out' ELSE '' END) AS player FROM B WHERE name = 'kenny'",
+                        "type": "sql"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "dalvany-image-panel",
+            "version": "4.0.0",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              },
+              "options": {
+                "alt_field": "",
+                "autofit": true,
+                "baseUrl": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/",
+                "height": "100%",
+                "icon_field": "player",
+                "open_url": {
+                  "base_url": "",
+                  "enable": false,
+                  "metric_field": "",
+                  "open_in_tab": false,
+                  "suffix": ""
+                },
+                "overlay": {
+                  "bindings": {
+                    "bindings": [],
+                    "has_text": false,
+                    "unbounded": "#66666620"
+                  },
+                  "field": "",
+                  "height": {
+                    "size": 5,
+                    "unit": "%"
+                  },
+                  "position": "Top right",
+                  "width": {
+                    "size": 5,
+                    "unit": "%"
+                  }
+                },
+                "shared_cross_hair": {
+                  "backgroundColor": "#FFFFFF10",
+                  "borderColor": "#FFFFFF20"
+                },
+                "singleFill": true,
+                "slideshow": {
+                  "duration": 5000,
+                  "enable": false,
+                  "infinite": true,
+                  "pauseOnHover": true,
+                  "transition": "Slide",
+                  "transition_duration": 1000
+                },
+                "suffix": ".webp",
+                "tooltip": false,
+                "tooltip_date_elapsed": false,
+                "tooltip_field": "",
+                "tooltip_include_date": false,
+                "tooltip_include_field": true,
+                "underline": {
+                  "bindings": {
+                    "bindings": [],
+                    "has_text": true,
+                    "unbounded": "#CCCCDCFF"
+                  },
+                  "bindings_field": "",
+                  "field": "",
+                  "text_align": "left",
+                  "text_size": "14"
+                },
+                "width": "100%"
+              }
+            }
+          }
+        }
+      },
+      "panel-32": {
+        "kind": "Panel",
+        "spec": {
+          "id": 32,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "A",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/main_game.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "player",
+                            "text": "player",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "episode",
+                            "text": "episode",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "episodeDate",
+                            "text": "episodeDate",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "roundTable",
+                            "text": "roundTable",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "status",
+                            "text": "status",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "shield",
+                            "text": "shield",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votedFor",
+                            "text": "votedFor",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votes",
+                            "text": "votes",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "outcome",
+                            "text": "outcome",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "recruitment",
+                            "text": "recruitment",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "power",
+                            "text": "power",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "B",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/contestants.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "name",
+                            "text": "name",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "firstName",
+                            "text": "firstName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "lastName",
+                            "text": "lastName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "knownAs",
+                            "text": "knownAs",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "profession",
+                            "text": "profession",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "age",
+                            "text": "age",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "gender",
+                            "text": "gender",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "nationality",
+                            "text": "nationality",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "wikipedia",
+                            "text": "wikipedia",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "C",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/end_game.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "player",
+                            "text": "player",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "round",
+                            "text": "round",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "status",
+                            "text": "status",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "decision",
+                            "text": "decision",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "votedFor",
+                            "text": "votedFor",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "outcome",
+                            "text": "outcome",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "Z",
+                    "hidden": false,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
+                      "spec": {
+                        "expression": "SELECT CONCAT('sebastian', CASE WHEN (SELECT COUNT(*) FROM A WHERE A.player = 'sebastian' AND A.outcome IN ('banished','murdered')) + (SELECT COUNT(*) FROM C WHERE C.player = 'sebastian' AND C.outcome = 'banished') > 0 THEN '_out' ELSE '' END) AS player FROM B WHERE name = 'sebastian'",
+                        "type": "sql"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "dalvany-image-panel",
+            "version": "4.0.0",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              },
+              "options": {
+                "alt_field": "",
+                "autofit": true,
+                "baseUrl": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/",
+                "height": "100%",
+                "icon_field": "player",
+                "open_url": {
+                  "base_url": "",
+                  "enable": false,
+                  "metric_field": "",
+                  "open_in_tab": false,
+                  "suffix": ""
+                },
+                "overlay": {
+                  "bindings": {
+                    "bindings": [],
+                    "has_text": false,
+                    "unbounded": "#66666620"
+                  },
+                  "field": "",
+                  "height": {
+                    "size": 5,
+                    "unit": "%"
+                  },
+                  "position": "Top right",
+                  "width": {
+                    "size": 5,
+                    "unit": "%"
+                  }
+                },
+                "shared_cross_hair": {
+                  "backgroundColor": "#FFFFFF10",
+                  "borderColor": "#FFFFFF20"
+                },
+                "singleFill": true,
+                "slideshow": {
+                  "duration": 5000,
+                  "enable": false,
+                  "infinite": true,
+                  "pauseOnHover": true,
+                  "transition": "Slide",
+                  "transition_duration": 1000
+                },
+                "suffix": ".webp",
+                "tooltip": false,
+                "tooltip_date_elapsed": false,
+                "tooltip_field": "",
+                "tooltip_include_date": false,
+                "tooltip_include_field": true,
+                "underline": {
+                  "bindings": {
+                    "bindings": [],
+                    "has_text": true,
+                    "unbounded": "#CCCCDCFF"
+                  },
+                  "bindings_field": "",
+                  "field": "",
+                  "text_align": "left",
+                  "text_size": "14"
+                },
+                "width": "100%"
+              }
+            }
+          }
+        }
+      },
+      "panel-40": {
+        "kind": "Panel",
+        "spec": {
+          "id": 40,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "refId": "A",
+                    "hidden": false,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "grafana",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "-- Grafana --"
+                      },
+                      "spec": {}
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "text",
+            "version": "13.4.0-41021278316",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              },
+              "options": {
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "## \ud83d\udcca The numbers behind the verdict\n\nKenny and Sebastian won their categories, but how did everyone else do? **Traitors** are ranked by how few faithful votes they drew per round table, and **faithful players** by how many of their votes landed on a traitor. After the leaderboards, see who left the game and when, and how the end game played out.",
+                "mode": "markdown"
               }
             }
           }
@@ -4349,12 +6479,25 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-1"
+                          "name": "panel-30"
                         },
                         "x": 0,
                         "y": 0,
-                        "width": 10,
-                        "height": 9
+                        "width": 24,
+                        "height": 11
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-1"
+                        },
+                        "x": 0,
+                        "y": 11,
+                        "width": 8,
+                        "height": 15
                       }
                     },
                     {
@@ -4364,10 +6507,49 @@
                           "kind": "ElementReference",
                           "name": "panel-2"
                         },
-                        "x": 10,
-                        "y": 0,
-                        "width": 14,
-                        "height": 9
+                        "x": 8,
+                        "y": 11,
+                        "width": 8,
+                        "height": 4
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-41"
+                        },
+                        "x": 16,
+                        "y": 11,
+                        "width": 8,
+                        "height": 4
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-33"
+                        },
+                        "x": 8,
+                        "y": 15,
+                        "width": 8,
+                        "height": 11
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-35"
+                        },
+                        "x": 16,
+                        "y": 15,
+                        "width": 8,
+                        "height": 11
                       }
                     }
                   ]
@@ -4397,11 +6579,24 @@
                                 "spec": {
                                   "element": {
                                     "kind": "ElementReference",
-                                    "name": "panel-3"
+                                    "name": "panel-31"
                                   },
                                   "x": 0,
                                   "y": 0,
-                                  "width": 6,
+                                  "width": 8,
+                                  "height": 8
+                                }
+                              },
+                              {
+                                "kind": "GridLayoutItem",
+                                "spec": {
+                                  "element": {
+                                    "kind": "ElementReference",
+                                    "name": "panel-3"
+                                  },
+                                  "x": 8,
+                                  "y": 0,
+                                  "width": 8,
                                   "height": 4
                                 }
                               },
@@ -4412,9 +6607,9 @@
                                     "kind": "ElementReference",
                                     "name": "panel-4"
                                   },
-                                  "x": 6,
+                                  "x": 16,
                                   "y": 0,
-                                  "width": 6,
+                                  "width": 8,
                                   "height": 4
                                 }
                               },
@@ -4425,9 +6620,9 @@
                                     "kind": "ElementReference",
                                     "name": "panel-5"
                                   },
-                                  "x": 12,
-                                  "y": 0,
-                                  "width": 6,
+                                  "x": 8,
+                                  "y": 4,
+                                  "width": 8,
                                   "height": 4
                                 }
                               },
@@ -4438,9 +6633,9 @@
                                     "kind": "ElementReference",
                                     "name": "panel-6"
                                   },
-                                  "x": 18,
-                                  "y": 0,
-                                  "width": 6,
+                                  "x": 16,
+                                  "y": 4,
+                                  "width": 8,
                                   "height": 4
                                 }
                               },
@@ -4452,7 +6647,7 @@
                                     "name": "panel-11"
                                   },
                                   "x": 0,
-                                  "y": 4,
+                                  "y": 8,
                                   "width": 16,
                                   "height": 14
                                 }
@@ -4465,7 +6660,7 @@
                                     "name": "panel-20"
                                   },
                                   "x": 16,
-                                  "y": 4,
+                                  "y": 8,
                                   "width": 8,
                                   "height": 14
                                 }
@@ -4488,11 +6683,24 @@
                                 "spec": {
                                   "element": {
                                     "kind": "ElementReference",
-                                    "name": "panel-15"
+                                    "name": "panel-32"
                                   },
                                   "x": 0,
                                   "y": 0,
-                                  "width": 6,
+                                  "width": 8,
+                                  "height": 8
+                                }
+                              },
+                              {
+                                "kind": "GridLayoutItem",
+                                "spec": {
+                                  "element": {
+                                    "kind": "ElementReference",
+                                    "name": "panel-15"
+                                  },
+                                  "x": 8,
+                                  "y": 0,
+                                  "width": 8,
                                   "height": 4
                                 }
                               },
@@ -4503,9 +6711,9 @@
                                     "kind": "ElementReference",
                                     "name": "panel-16"
                                   },
-                                  "x": 6,
+                                  "x": 16,
                                   "y": 0,
-                                  "width": 6,
+                                  "width": 8,
                                   "height": 4
                                 }
                               },
@@ -4516,9 +6724,9 @@
                                     "kind": "ElementReference",
                                     "name": "panel-17"
                                   },
-                                  "x": 12,
-                                  "y": 0,
-                                  "width": 6,
+                                  "x": 8,
+                                  "y": 4,
+                                  "width": 8,
                                   "height": 4
                                 }
                               },
@@ -4529,9 +6737,9 @@
                                     "kind": "ElementReference",
                                     "name": "panel-18"
                                   },
-                                  "x": 18,
-                                  "y": 0,
-                                  "width": 6,
+                                  "x": 16,
+                                  "y": 4,
+                                  "width": 8,
                                   "height": 4
                                 }
                               },
@@ -4543,7 +6751,7 @@
                                     "name": "panel-19"
                                   },
                                   "x": 0,
-                                  "y": 4,
+                                  "y": 8,
                                   "width": 16,
                                   "height": 14
                                 }
@@ -4556,7 +6764,7 @@
                                     "name": "panel-21"
                                   },
                                   "x": 16,
-                                  "y": 4,
+                                  "y": 8,
                                   "width": 8,
                                   "height": 14
                                 }
@@ -4585,10 +6793,23 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-7"
+                          "name": "panel-40"
                         },
                         "x": 0,
                         "y": 0,
+                        "width": 24,
+                        "height": 4
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-7"
+                        },
+                        "x": 0,
+                        "y": 4,
                         "width": 12,
                         "height": 10
                       }
@@ -4601,7 +6822,7 @@
                           "name": "panel-8"
                         },
                         "x": 12,
-                        "y": 0,
+                        "y": 4,
                         "width": 12,
                         "height": 10
                       }
@@ -4614,7 +6835,7 @@
                           "name": "panel-9"
                         },
                         "x": 0,
-                        "y": 10,
+                        "y": 14,
                         "width": 14,
                         "height": 19
                       }
@@ -4627,7 +6848,7 @@
                           "name": "panel-10"
                         },
                         "x": 14,
-                        "y": 10,
+                        "y": 14,
                         "width": 10,
                         "height": 19
                       }
@@ -4640,7 +6861,7 @@
                           "name": "panel-12"
                         },
                         "x": 0,
-                        "y": 29,
+                        "y": 33,
                         "width": 11,
                         "height": 19
                       }
@@ -4653,7 +6874,7 @@
                           "name": "panel-13"
                         },
                         "x": 11,
-                        "y": 29,
+                        "y": 33,
                         "width": 13,
                         "height": 19
                       }
@@ -4666,9 +6887,9 @@
                           "name": "panel-14"
                         },
                         "x": 0,
-                        "y": 48,
+                        "y": 52,
                         "width": 24,
-                        "height": 7
+                        "height": 9
                       }
                     }
                   ]

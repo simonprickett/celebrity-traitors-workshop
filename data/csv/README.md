@@ -14,6 +14,17 @@ Each file has one header row of camelCase column names, then one row per record.
 | [`end_game.csv`](#end_gamecsv) | One per player per end game round (16) |
 | [`prize_fund.csv`](#prize_fundcsv) | One per episode (10) |
 
+## Hosted copies
+
+These files are also hosted, and can be loaded directly from a URL:
+
+| Dataset | URL |
+|---|---|
+| Contestants | `https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/data/csv/contestants.csv` |
+| Main game | `https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/data/csv/main_game.csv` |
+| End game | `https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/data/csv/end_game.csv` |
+| Prize fund | `https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/data/csv/prize_fund.csv` |
+
 ## `contestants.csv`
 
 The people who took part.

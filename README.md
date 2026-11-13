@@ -42,6 +42,18 @@ Every dataset is available in two formats, with the same field names and the sam
 
 The [data README](data/README.md) describes the conventions used throughout (nulls, dates, player ids and so on). If you edit one format, the conversion script described in the [tools README](tools/README.md) keeps the other in step.
 
+### Hosted version
+
+A hosted copy of the data is available, so you can use it without cloning this repository. The files are the same as in `data/`, and the URLs follow the same layout:
+
+| Data | URL |
+|---|---|
+| CSV | `https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/data/csv/<dataset>.csv` |
+| JSON | `https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/data/json/<dataset>.json` |
+| Images | `https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/images/<name>.webp` |
+
+For example, [`contestants.csv`](https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/data/csv/contestants.csv) and [`amol.webp`](https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/images/amol.webp). The full list of URLs is in the [data README](data/README.md#hosted-data).
+
 ### Images
 
 Contestant photos are in [`data/images/`](data/images/) in WebP format. Each contestant has two images:

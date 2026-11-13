@@ -9,6 +9,17 @@ Each file is a JSON object with one key, holding a flat array of records. Every 
 | [`end_game.json`](#end_gamejson) | `endGame` | One per player per end game round (16) |
 | [`prize_fund.json`](#prize_fundjson) | `prizeFund` | One per episode (10) |
 
+## Hosted copies
+
+These files are also hosted, and can be loaded directly from a URL:
+
+| Dataset | URL |
+|---|---|
+| Contestants | `https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/data/json/contestants.json` |
+| Main game | `https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/data/json/main_game.json` |
+| End game | `https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/data/json/end_game.json` |
+| Prize fund | `https://storage.googleapis.com/play-static-content/celebrity-traitors-uk/data/json/prize_fund.json` |
+
 ## `contestants.json`
 
 The people who took part.

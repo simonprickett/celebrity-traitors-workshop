@@ -110,7 +110,7 @@
                   "showMiniMap": false
                 },
                 "mode": "markdown",
-                "content": "# Celebrity Traitors: who played the best game?\n\n> ### \ud83c\udfc6 **Kenny** played the best game overall. **Sebastian** was the best faithful.\n\nThe data records **outcomes and votes**, not persuasion or the social game, so each side is judged on its own aim:\n\n| | \ud83d\udde1\ufe0f Traitor | \ud83d\udee1\ufe0f Faithful |\n|---|---|---|\n| **The aim** | Stay undetected | Find the traitors |\n| **The measure** | Faithful votes drawn per round table | Votes that landed on a traitor, and surviving to the end |\n\nEverything here is read live from CSV files on GitHub, and **every figure is a SQL expression**. Open any panel and look at query **Z**."
+                "content": "# Celebrity Traitors: who played the best game?\n\n> ### \ud83c\udfc6 **Kenny** played the best game overall. **Sebastian** was the best faithful.\n\nThe data records **outcomes and votes**, not persuasion or the social game, so each side is judged on its own aim:\n\n| | \ud83d\udde1\ufe0f Traitor | \ud83d\udee1\ufe0f Faithful |\n|---|---|---|\n| **The aim** | Stay undetected. | Find the traitors. |\n| **The measure** | Faithful votes drawn per round table. | Votes that landed on a traitor, and surviving to the end. |\n\nEverything here is read live from CSV files on GitHub using the **Infinity data source**, and **every figure is a SQL expression**. Open any panel and look at query **Z**."
               }
             }
           }
@@ -2487,7 +2487,7 @@
                         "name": "__expr__"
                       },
                       "spec": {
-                        "expression": "SELECT a.episode, a.roundTable AS round_table, a.status,\n       CASE WHEN a.votedFor <> '' THEN CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', a.votedFor, '.webp') ELSE NULL END AS voted_for_photo,\n       a.votedFor AS voted_for, a.votes, a.power\nFROM A a\nWHERE a.player = 'kenny' AND a.roundTable IS NOT NULL\nORDER BY a.episode, a.roundTable",
+                        "expression": "SELECT a.episode, a.roundTable AS round_table, a.status,\n       CASE WHEN a.votedFor <> '' THEN CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', a.votedFor, '.webp') ELSE NULL END AS voted_for_photo,\n       vb.firstName AS voted_for, a.votes, a.power\nFROM A a\nLEFT JOIN B vb ON vb.name = a.votedFor\nWHERE a.player = 'kenny' AND a.roundTable IS NOT NULL\nORDER BY a.episode, a.roundTable",
                         "type": "sql"
                       }
                     }
@@ -3284,7 +3284,7 @@
                         "name": "__expr__"
                       },
                       "spec": {
-                        "expression": "SELECT c.round,\n       CASE WHEN c.outcome = 'banished' THEN CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', c.player, '_out.webp')\n            ELSE CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', c.player, '.webp') END AS photo,\n       COALESCE(NULLIF(b.knownAs, ''), CONCAT(b.firstName, ' ', b.lastName)) AS contestant,\n       c.status, c.decision, c.votedFor AS voted_for, c.outcome\nFROM C c\nJOIN B b ON b.name = c.player\nORDER BY c.round, c.player",
+                        "expression": "SELECT c.round,\n       CASE WHEN c.outcome = 'banished' THEN CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', c.player, '_out.webp')\n            ELSE CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', c.player, '.webp') END AS photo,\n       COALESCE(NULLIF(b.knownAs, ''), CONCAT(b.firstName, ' ', b.lastName)) AS contestant,\n       c.status, CASE c.decision WHEN 'end' THEN '\ud83d\udc4d End' WHEN 'continue' THEN '\ud83d\udc4e Continue' ELSE c.decision END AS decision, vb.firstName AS voted_for, c.outcome\nFROM C c\nJOIN B b ON b.name = c.player\nLEFT JOIN B vb ON vb.name = c.votedFor\nORDER BY c.round, c.player",
                         "type": "sql"
                       }
                     }
@@ -3512,6 +3512,26 @@
                                 "index": 4
                               }
                             }
+                          },
+                          {
+                            "type": "special",
+                            "options": {
+                              "match": "empty",
+                              "result": {
+                                "color": "transparent",
+                                "index": 5
+                              }
+                            }
+                          },
+                          {
+                            "type": "special",
+                            "options": {
+                              "match": "null",
+                              "result": {
+                                "color": "transparent",
+                                "index": 6
+                              }
+                            }
                           }
                         ]
                       },
@@ -3542,7 +3562,7 @@
         "kind": "Panel",
         "spec": {
           "id": 14,
-          "title": "How these figures are calculated",
+          "title": "Method and caveats",
           "description": "",
           "links": [],
           "data": {
@@ -4303,6 +4323,86 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
+                    "refId": "B",
+                    "hidden": true,
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "yesoreyeram-infinity-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "ffntbc1jmpvy8a"
+                      },
+                      "spec": {
+                        "type": "csv",
+                        "source": "url",
+                        "format": "table",
+                        "parser": "backend",
+                        "url": "https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/csv/contestants.csv",
+                        "url_options": {
+                          "method": "GET",
+                          "data": ""
+                        },
+                        "columns": [
+                          {
+                            "selector": "name",
+                            "text": "name",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "firstName",
+                            "text": "firstName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "lastName",
+                            "text": "lastName",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "knownAs",
+                            "text": "knownAs",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "profession",
+                            "text": "profession",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "age",
+                            "text": "age",
+                            "type": "number"
+                          },
+                          {
+                            "selector": "gender",
+                            "text": "gender",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "nationality",
+                            "text": "nationality",
+                            "type": "string"
+                          },
+                          {
+                            "selector": "wikipedia",
+                            "text": "wikipedia",
+                            "type": "string"
+                          }
+                        ],
+                        "filters": [],
+                        "root_selector": "",
+                        "csv_options": {
+                          "delimiter": ",",
+                          "relax_column_count": true
+                        },
+                        "global_query_id": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
                     "refId": "Z",
                     "hidden": false,
                     "query": {
@@ -4313,7 +4413,7 @@
                         "name": "__expr__"
                       },
                       "spec": {
-                        "expression": "SELECT a.episode, a.roundTable AS round_table, a.status,\n       CASE WHEN a.votedFor <> '' THEN CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', a.votedFor, '.webp') ELSE NULL END AS voted_for_photo,\n       a.votedFor AS voted_for,\n       CASE WHEN t.player IS NOT NULL THEN 'traitor' ELSE 'faithful' END AS voted_for_was,\n       a.votes, a.power\nFROM A a\nLEFT JOIN A t ON t.player = a.votedFor AND t.roundTable = a.roundTable AND t.status = 'traitor'\nWHERE a.player = 'sebastian' AND a.roundTable IS NOT NULL\nORDER BY a.episode, a.roundTable",
+                        "expression": "SELECT a.episode, a.roundTable AS round_table, a.status,\n       CASE WHEN a.votedFor <> '' THEN CONCAT('https://raw.githubusercontent.com/simonprickett/celebrity-traitors-workshop/main/data/images/', a.votedFor, '.webp') ELSE NULL END AS voted_for_photo,\n       vb.firstName AS voted_for,\n       CASE WHEN t.player IS NOT NULL THEN 'traitor' ELSE 'faithful' END AS voted_for_was,\n       a.votes, a.power\nFROM A a\nLEFT JOIN B vb ON vb.name = a.votedFor\nLEFT JOIN A t ON t.player = a.votedFor AND t.roundTable = a.roundTable AND t.status = 'traitor'\nWHERE a.player = 'sebastian' AND a.roundTable IS NOT NULL\nORDER BY a.episode, a.roundTable",
                         "type": "sql"
                       }
                     }
